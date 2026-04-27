@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Portfolio — Prasanna</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F5F0;--surface:#FFFFFF;--surface2:#F0EDE6;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+  --text:#1A1814;--muted:#8A8278;--dim:#C5C0B8;
+  --gold:#9A7B2E;--gold-light:#F5EDD6;--gold-mid:#C9A84C;
+  --green:#1A7A5A;--green-light:#E8F4EF;
+  --red:#B54A2A;--red-light:#F7EDE8;
+  --blue:#1A4A7A;--blue-light:#E8EFF7;
+}
+html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
+
+/* HEADER */
+.header{background:var(--text);color:#F7F5F0;padding:28px 40px;display:flex;align-items:flex-end;justify-content:space-between}
+.header-logo{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:6px}
+.header-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.01em;line-height:1}
+.header-sub{font-size:11px;color:rgba(247,245,240,0.45);margin-top:5px;letter-spacing:.06em}
+.header-right{text-align:right}
+.header-date{font-size:11px;color:rgba(247,245,240,0.4);letter-spacing:.06em}
+.header-badge{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 10px;border:1px solid rgba(201,168,76,0.3);border-radius:20px;font-size:10px;color:var(--gold-mid);letter-spacing:.06em}
+.header-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold-mid);display:inline-block}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;gap:0}
+.ntab{padding:14px 20px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);letter-spacing:.04em;transition:all .2s}
+.ntab.on{color:var(--gold);border-bottom-color:var(--gold)}
+.ntab:hover{color:var(--text)}
+
+/* WRAP */
+.wrap{max-width:1100px;margin:0 auto;padding:32px 40px}
+
+/* SECTION TITLES */
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:4px}
+.sec-sub{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:20px}
+
+/* SUMMARY CARDS */
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+.sum-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px 22px;position:relative}
+.sum-card-accent{position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+.sum-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.sum-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1;color:var(--text)}
+.sum-sub{font-size:11px;color:var(--muted);margin-top:6px}
+.sum-bar{height:2px;background:var(--border);border-radius:2px;margin-top:12px;overflow:hidden}
+.sum-bar-fill{height:2px;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* NEXT PAYMENT ALERT */
+.next-alert{background:var(--gold-light);border:1px solid rgba(154,123,46,0.2);border-radius:3px;padding:16px 22px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between}
+.next-alert-left{}
+.next-alert-label{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.next-alert-prop{font-size:14px;font-weight:500;color:var(--text)}
+.next-alert-inst{font-size:11px;color:var(--muted);margin-top:2px}
+.next-alert-right{text-align:right}
+.next-alert-amt{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:var(--gold)}
+.next-alert-date{font-size:11px;color:var(--muted);margin-top:2px}
+.days-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:.04em;margin-top:4px}
+.days-pill.urgent{background:var(--red-light);color:var(--red)}
+.days-pill.soon{background:var(--gold-light);color:var(--gold)}
+.days-pill.ok{background:var(--green-light);color:var(--green)}
+
+/* PROPERTY CARDS */
+.prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
+.prop-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.prop-card:hover{border-color:var(--border2);box-shadow:0 2px 16px rgba(0,0,0,0.06)}
+.prop-card-top{padding:18px 20px 14px;border-bottom:1px solid var(--border)}
+.prop-card-dev{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.prop-card-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;line-height:1.1}
+.prop-card-ref{font-size:10px;color:var(--muted);margin-top:3px}
+.prop-card-bottom{padding:14px 20px;display:flex;align-items:center;gap:14px}
+.prop-stat{flex:1}
+.prop-stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.prop-stat-val{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400}
+.prop-card-progress{width:100%;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px}
+.prop-card-bar{height:2px;border-radius:2px;transition:width 1s ease}
+.prop-card-pct{font-size:10px;color:var(--muted);text-align:right;margin-top:4px}
+
+/* UPCOMING LIST */
+.up-section{margin-bottom:32px}
+.up-item{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;margin-bottom:6px;transition:border-color .15s}
+.up-item:hover{border-color:var(--border2)}
+.up-item-left{display:flex;align-items:center;gap:14px}
+.up-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.up-item-info{}
+.up-item-prop{font-size:13px;font-weight:500;color:var(--text)}
+.up-item-inst{font-size:11px;color:var(--muted);margin-top:1px}
+.up-item-right{text-align:right}
+.up-item-amt{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--text)}
+.up-item-date{font-size:10px;color:var(--muted);margin-top:2px}
+
+/* SCHEDULE TABLE */
+.sched-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.sched-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.sched-prop-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400}
+.sched-prop-dev{font-size:10px;color:var(--muted);margin-top:2px}
+.sched-header-right{text-align:right}
+.sched-pct{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)}
+.sched-pct-label{font-size:10px;color:var(--muted)}
+.sched-body{display:none}
+.sched-body.open{display:block}
+.sched-row{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--border)}
+.sched-row:last-child{border-bottom:none}
+.sched-row.paid{opacity:.45}
+.sched-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;font-size:8px;color:var(--green)}
+.sched-check.checked{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.sched-label{flex:1;font-size:12px;color:var(--text)}
+.sched-type{font-size:9px;color:var(--muted);background:var(--surface2);padding:1px 6px;border-radius:2px;margin-left:6px}
+.sched-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-right:16px}
+.sched-amt{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;min-width:120px;text-align:right}
+
+/* YEARLY CASHFLOW */
+.cf-year{margin-bottom:28px}
+.cf-year-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.cf-year-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--dim)}
+.cf-year-total{font-size:13px;color:var(--text);font-family:'DM Mono',monospace}
+.cf-month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.cf-month{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px}
+.cf-month-name{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.cf-month-amt{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text)}
+.cf-month-items{margin-top:4px}
+.cf-month-item{font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* PAGE SECTIONS */
+.pg{display:none}.pg.on{display:block}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:80px;color:var(--muted);gap:10px;font-size:13px}
+.spinner{width:16px;height:16px;border:1.5px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HANDOVER BADGE */
+.handover-badge{display:inline-block;padding:3px 9px;background:var(--blue-light);color:var(--blue);border-radius:2px;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
+
+@media(max-width:768px){
+  .header{padding:20px 20px;flex-direction:column;align-items:flex-start;gap:10px}
+  .header-right{text-align:left}
+  .nav{padding:0 20px;overflow-x:auto}
+  .wrap{padding:20px 20px}
+  .sum-grid{grid-template-columns:repeat(2,1fr)}
+  .prop-grid{grid-template-columns:1fr}
+  .cf-month-grid{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">PropTrack</div>
+    <div class="header-name" id="clientName">Your Portfolio</div>
+    <div class="header-sub">DUBAI · PROPERTY INVESTMENT PORTFOLIO</div>
+  </div>
+  <div class="header-right">
+    <div class="header-date" id="headerDate"></div>
+    <div class="header-badge">Portfolio active</div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="ntab on" onclick="showPg('overview',this)">Overview</div>
+  <div class="ntab" onclick="showPg('properties',this)">Properties</div>
+  <div class="ntab" onclick="showPg('schedule',this)">Payment schedule</div>
+  <div class="ntab" onclick="showPg('cashflow',this)">Cashflow</div>
+</div>
+
+<div class="wrap">
+
+  <!-- OVERVIEW -->
+  <div id="pg-overview" class="pg on">
+    <div id="overviewContent"><div class="loading"><div class="spinner"></div>Loading your portfolio...</div></div>
+  </div>
+
+  <!-- PROPERTIES -->
+  <div id="pg-properties" class="pg">
+    <div class="sec-title">Your properties</div>
+    <div class="sec-sub">Click any property to view the full payment schedule</div>
+    <div id="propGrid"></div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div id="pg-schedule" class="pg">
+    <div class="sec-title">Payment schedule</div>
+    <div class="sec-sub">Full installment breakdown across all properties</div>
+    <div id="schedContent"></div>
+  </div>
+
+  <!-- CASHFLOW -->
+  <div id="pg-cashflow" class="pg">
+    <div class="sec-title">Cashflow by year</div>
+    <div class="sec-sub">Projected payment obligations through handover</div>
+    <div id="cfContent"></div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://wumcokaqgoncfsoizvqv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kAU0EeiQLYsbNR1s2mdJsA_JDR7kmML';
+
+async function sbGet(table, params='') {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
+    headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+  });
+  return r.json();
+}
+
+const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const DCOLS = {
+  'NAKHEEL':'#1D9E75','EMAAR':'#185FA5','MAJID AL FUTTAIM':'#9A7B2E',
+  'DUBAI PROPERTIES':'#534AB7','DIVINE ONE':'#993C1D','TILAL AL GHAF':'#993556','OTHER':'#8A8278'
+};
+const today = new Date();
+let PROPS=[], INSTS=[];
+
+function fm(n) {
+  if (!n&&n!==0) return '—';
+  n=Math.round(n);
+  if (n>=1e9) return 'AED '+(n/1e9).toFixed(2)+'B';
+  if (n>=1e6) return 'AED '+(n/1e6).toFixed(1)+'M';
+  if (n>=1e3) return 'AED '+(n/1e3).toFixed(0)+'K';
+  return 'AED '+n.toLocaleString();
+}
+function fmFull(n) { return n?'AED '+Math.round(n).toLocaleString():'—'; }
+function fd(s) {
+  if (!s) return '—';
+  const d=new Date(s); return MN[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
+}
+function getPaid(p){ return INSTS.filter(i=>i.property_id===p.id&&i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
+function getDue(p){ return INSTS.filter(i=>i.property_id===p.id&&!i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
+function getDevColor(dev){ return DCOLS[dev]||'#8A8278'; }
+
+async function load() {
+  document.getElementById('headerDate').textContent = today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  try {
+    [PROPS, INSTS] = await Promise.all([
+      sbGet('properties','?order=purchase_price.desc&select=*'),
+      sbGet('installments','?order=due_date.asc&select=*')
+    ]);
+    const clients = await sbGet('clients','?select=*');
+    if (clients.length) document.getElementById('clientName').textContent = clients[0].full_name;
+    renderOverview();
+    renderProperties();
+    renderSchedule();
+    renderCashflow();
+  } catch(e) {
+    document.getElementById('overviewContent').innerHTML = `<div class="loading">Unable to load portfolio data. Please try again.</div>`;
+  }
+}
+
+// ============================================================
+// OVERVIEW
+// ============================================================
+function renderOverview() {
+  const totalPP = PROPS.reduce((s,p)=>s+(p.purchase_price||0),0);
+  const totalPaid = PROPS.reduce((s,p)=>s+getPaid(p),0);
+  const totalDue = PROPS.reduce((s,p)=>s+getDue(p),0);
+  const pct = totalPP?Math.round(totalPaid/totalPP*1000)/10:0;
+
+  // Next payment
+  const next = INSTS.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today)
+    .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date))[0];
+  const nextProp = next ? PROPS.find(p=>p.id===next.property_id) : null;
+  const nextDays = next ? Math.ceil((new Date(next.due_date)-today)/864e5) : null;
+  const daysCls = nextDays<14?'urgent':nextDays<45?'soon':'ok';
+  const daysLabel = nextDays<14?`${nextDays} days — act soon`:nextDays<45?`${nextDays} days`:nextDays+' days away';
+
+  // Upcoming 90 days
+  const up90 = new Date(today); up90.setDate(up90.getDate()+90);
+  const upcoming = INSTS.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today&&new Date(i.due_date)<=up90)
+    .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
+  const upTotal = upcoming.reduce((s,i)=>s+(i.amount_aed||0),0);
+
+  document.getElementById('overviewContent').innerHTML = `
+    <div class="sum-grid">
+      <div class="sum-card">
+        <div class="sum-card-accent" style="background:var(--gold-mid)"></div>
+        <div class="sum-label">Total investment</div>
+        <div class="sum-val">${fm(totalPP)}</div>
+        <div class="sum-sub">${PROPS.length} properties across ${[...new Set(PROPS.map(p=>p.developer))].length} developers</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-card-accent" style="background:var(--green)"></div>
+        <div class="sum-label">Total paid to date</div>
+        <div class="sum-val" style="color:var(--green)">${fm(totalPaid)}</div>
+        <div class="sum-sub">${pct}% of total portfolio</div>
+        <div class="sum-bar"><div class="sum-bar-fill" style="width:${pct}%;background:var(--green)"></div></div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-card-accent" style="background:var(--red)"></div>
+        <div class="sum-label">Remaining balance</div>
+        <div class="sum-val" style="color:var(--red)">${fm(totalDue)}</div>
+        <div class="sum-sub">Across all active properties</div>
+      </div>
+      <div class="sum-card">
+        <div class="sum-card-accent" style="background:var(--blue)"></div>
+        <div class="sum-label">Due in next 90 days</div>
+        <div class="sum-val" style="color:var(--blue)">${fm(upTotal)}</div>
+        <div class="sum-sub">${upcoming.length} payment${upcoming.length!==1?'s':''} scheduled</div>
+      </div>
+    </div>
+
+    ${next ? `
+    <div class="next-alert">
+      <div class="next-alert-left">
+        <div class="next-alert-label">Next payment due</div>
+        <div class="next-alert-prop">${nextProp?.project_name||'—'}</div>
+        <div class="next-alert-inst">${next.label}</div>
+      </div>
+      <div class="next-alert-right">
+        <div class="next-alert-amt">${fmFull(next.amount_aed)}</div>
+        <div class="next-alert-date">${fd(next.due_date)}</div>
+        <div class="days-pill ${daysCls}">${daysLabel}</div>
+      </div>
+    </div>` : ''}
+
+    <div class="sec-title">Upcoming payments</div>
+    <div class="sec-sub" style="margin-bottom:14px">Next 90 days across all properties</div>
+
+    ${upcoming.length ? upcoming.map(i=>{
+      const prop = PROPS.find(p=>p.id===i.property_id);
+      const d = new Date(i.due_date);
+      const days = Math.ceil((d-today)/864e5);
+      const col = getDevColor(prop?.developer);
+      return `<div class="up-item">
+        <div class="up-item-left">
+          <div class="up-item-dot" style="background:${col}"></div>
+          <div class="up-item-info">
+            <div class="up-item-prop">${prop?.project_name||'—'}</div>
+            <div class="up-item-inst">${i.label}${i.trigger_type==='milestone'?' · '+i.milestone_pct+'% milestone':''}</div>
+          </div>
+        </div>
+        <div class="up-item-right">
+          <div class="up-item-amt">${fmFull(i.amount_aed)}</div>
+          <div class="up-item-date">${fd(i.due_date)} · <span style="color:${days<14?'var(--red)':days<30?'var(--gold)':'var(--green)'}">${days}d</span></div>
+        </div>
+      </div>`;
+    }).join('') : '<div style="color:var(--muted);font-size:12px;padding:20px 0">No payments due in the next 90 days.</div>'}
+  `;
+
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.sum-bar-fill').forEach(b=>b.style.width=b.style.width);
+  },100);
+}
+
+// ============================================================
+// PROPERTIES
+// ============================================================
+function renderProperties() {
+  document.getElementById('propGrid').innerHTML = `<div class="prop-grid">
+    ${PROPS.map(p=>{
+      const paid=getPaid(p),pp=p.purchase_price||0,due=getDue(p);
+      const pct=pp?Math.round(paid/pp*100):0;
+      const col=getDevColor(p.developer);
+      const instCount=INSTS.filter(i=>i.property_id===p.id).length;
+      const paidCount=INSTS.filter(i=>i.property_id===p.id&&i.is_paid).length;
+      return `<div class="prop-card" onclick="showPg('schedule',null);scrollToSched('${p.id}')">
+        <div class="prop-card-top">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between">
+            <div>
+              <div class="prop-card-dev" style="color:${col}">${p.developer}</div>
+              <div class="prop-card-name">${p.project_name}</div>
+              <div class="prop-card-ref">${p.unit_ref||''} · ${p.bedrooms||''}</div>
+            </div>
+            <div class="handover-badge">${p.handover_date||'TBC'}</div>
+          </div>
+          <div class="prop-card-progress" style="margin-top:14px">
+            <div class="prop-card-bar" style="width:${pct}%;background:${col}"></div>
+          </div>
+          <div class="prop-card-pct" style="color:${col}">${pct}% paid · ${paidCount}/${instCount} installments</div>
+        </div>
+        <div class="prop-card-bottom">
+          <div class="prop-stat">
+            <div class="prop-stat-label">Purchase price</div>
+            <div class="prop-stat-val">${fm(pp)}</div>
+          </div>
+          <div style="width:1px;height:30px;background:var(--border)"></div>
+          <div class="prop-stat">
+            <div class="prop-stat-label">Paid</div>
+            <div class="prop-stat-val" style="color:var(--green)">${fm(paid)}</div>
+          </div>
+          <div style="width:1px;height:30px;background:var(--border)"></div>
+          <div class="prop-stat">
+            <div class="prop-stat-label">Remaining</div>
+            <div class="prop-stat-val" style="color:var(--red)">${fm(due)}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+// ============================================================
+// SCHEDULE
+// ============================================================
+function renderSchedule() {
+  document.getElementById('schedContent').innerHTML = PROPS.map(p=>{
+    const insts = INSTS.filter(i=>i.property_id===p.id).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
+    const paid=getPaid(p),pp=p.purchase_price||0;
+    const pct=pp?Math.round(paid/pp*100):0;
+    const col=getDevColor(p.developer);
+    return `<div class="sched-card" id="sched-${p.id}">
+      <div class="sched-header" onclick="toggleSched('sb-${p.id}')">
+        <div>
+          <div style="font-size:9px;color:${col};text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">${p.developer}</div>
+          <div class="sched-prop-name">${p.project_name}</div>
+          <div class="sched-prop-dev">${p.unit_ref||''} · ${p.bedrooms||''} · Handover ${p.handover_date||'TBC'}</div>
+        </div>
+        <div class="sched-header-right">
+          <div class="sched-pct" style="color:${col}">${pct}%</div>
+          <div class="sched-pct-label">paid · ${fmFull(pp)}</div>
+        </div>
+      </div>
+      <div class="sched-body" id="sb-${p.id}">
+        ${insts.map(i=>{
+          const overdue = !i.is_paid && new Date(i.due_date) < today;
+          return `<div class="sched-row ${i.is_paid?'paid':''}">
+            <div class="sched-check ${i.is_paid?'checked':''}">${i.is_paid?'✓':''}</div>
+            <div class="sched-label">
+              ${i.label}
+              ${i.trigger_type==='milestone'?`<span class="sched-type">${i.milestone_pct}% milestone</span>`:''}
+            </div>
+            <div class="sched-date" style="color:${overdue?'var(--red)':i.is_paid?'var(--muted)':'var(--text)'}">
+              ${i.is_paid?`Paid ${fd(i.paid_on)}`:fd(i.due_date)}
+              ${overdue?` <span style="font-size:9px;color:var(--red)">overdue</span>`:''}
+            </div>
+            <div class="sched-amt" style="color:${i.is_paid?'var(--muted)':'var(--text)'}">${fmFull(i.amount_aed)}</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSched(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+function scrollToSched(propId) {
+  setTimeout(()=>{
+    const el = document.getElementById('sched-'+propId);
+    if (el) {
+      el.scrollIntoView({behavior:'smooth',block:'start'});
+      const body = document.getElementById('sb-'+propId);
+      if (body) body.classList.add('open');
+    }
+  }, 100);
+}
+
+// ============================================================
+// CASHFLOW
+// ============================================================
+function renderCashflow() {
+  const byYear = {};
+  INSTS.forEach(i=>{
+    if (!i.due_date) return;
+    const d=new Date(i.due_date), yr=d.getFullYear(), mo=d.getMonth();
+    if (!byYear[yr]) byYear[yr]=Array(12).fill(null).map(()=>({paid:0,items:[]}));
+    const prop=PROPS.find(p=>p.id===i.property_id);
+    if (i.is_paid) byYear[yr][mo].paid+=i.amount_aed||0;
+    else byYear[yr][mo].items.push({amt:i.amount_aed||0,name:prop?.project_name||'—',label:i.label});
+  });
+
+  const yrs = Object.keys(byYear).sort();
+  document.getElementById('cfContent').innerHTML = yrs.map(yr=>{
+    const months = byYear[yr];
+    const totalPaid=months.reduce((s,m)=>s+m.paid,0);
+    const totalDue=months.reduce((s,m)=>s+m.items.reduce((ss,i)=>ss+i.amt,0),0);
+    const total=totalPaid+totalDue;
+
+    const activeMos = months.map((m,mi)=>({...m,mi})).filter(m=>m.paid||m.items.length);
+
+    return `<div class="cf-year">
+      <div class="cf-year-hdr">
+        <span class="cf-year-num">${yr}</span>
+        <span class="cf-year-total">${fm(total)}</span>
+        ${totalPaid?`<span style="font-size:11px;color:var(--green)">${fm(totalPaid)} paid</span>`:''}
+        ${totalDue?`<span style="font-size:11px;color:var(--red)">${fm(totalDue)} due</span>`:''}
+      </div>
+      <div class="cf-month-grid">
+        ${activeMos.map(m=>`
+          <div class="cf-month">
+            <div class="cf-month-name">${MN[m.mi]}</div>
+            ${m.paid?`<div class="cf-month-amt" style="color:var(--green);font-size:14px">${fm(m.paid)}<span style="font-size:9px;color:var(--green);margin-left:4px">paid</span></div>`:''}
+            ${m.items.length?`<div class="cf-month-amt">${fm(m.items.reduce((s,i)=>s+i.amt,0))}</div>`:''}
+            <div class="cf-month-items">
+              ${m.items.map(i=>`<div class="cf-month-item" title="${i.name} — ${i.label}">${i.name.split(' ').slice(0,2).join(' ')}</div>`).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// NAV
+// ============================================================
+function showPg(id, el) {
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  if (el) el.classList.add('on');
+  else {
+    const map={overview:0,properties:1,schedule:2,cashflow:3};
+    document.querySelectorAll('.ntab')[map[id]]?.classList.add('on');
+  }
+}
+
+load();
+</script>
+</body>
+</html>
