@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PropTrack — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F7F5F0;--surface:#FFFFFF;--surface2:#F0EDE6;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+  --text:#1A1814;--muted:#8A8278;--dim:#C5C0B8;
+  --gold:#9A7B2E;--gold-light:#F5EDD6;--gold-mid:#C9A84C;
+  --gold-bg:rgba(201,168,76,0.1);--gold-border:rgba(201,168,76,0.35);
+  --green:#1A7A5A;--green-light:#E8F4EF;
+  --red:#B54A2A;--red-light:#F7EDE8;
+}
+html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+
+/* LAYOUT */
+.page{min-height:100vh;display:flex;flex-direction:column}
+
+/* HEADER */
+.header{padding:24px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--text)}
+.logo{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-mid);letter-spacing:.04em}
+.header-sub{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.header-date{font-size:11px;color:rgba(255,255,255,0.3);font-family:'DM Mono',monospace}
+
+/* HERO */
+.hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.hero-eyebrow{font-size:10px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--text);text-align:center;line-height:1.1;margin-bottom:8px}
+.hero-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:44px}
+
+/* PORTAL CARDS */
+.portals{display:flex;gap:16px;width:100%;max-width:640px;margin-bottom:40px}
+.portal-card{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:28px 24px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden}
+.portal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transition:opacity .2s}
+.portal-card.broker::before{background:var(--gold-mid)}
+.portal-card.client::before{background:var(--green)}
+.portal-card:hover{border-color:var(--border2);box-shadow:0 4px 24px rgba(0,0,0,0.08);transform:translateY(-1px)}
+.portal-card.broker:hover{border-color:var(--gold-border)}
+.portal-card.client:hover{border-color:rgba(26,122,90,0.3)}
+.portal-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:18px}
+.portal-card.broker .portal-icon{background:var(--gold-bg)}
+.portal-card.client .portal-icon{background:var(--green-light)}
+.portal-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;font-family:'DM Mono',monospace}
+.portal-card.broker .portal-label{color:var(--gold)}
+.portal-card.client .portal-label{color:var(--green)}
+.portal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:6px}
+.portal-desc{font-size:11px;color:var(--muted);line-height:1.5}
+
+/* LOGIN PANELS */
+.login-wrap{width:100%;max-width:400px;display:none}
+.login-wrap.visible{display:block}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.login-back{font-size:11px;color:var(--muted);cursor:pointer;margin-bottom:16px;display:inline-flex;align-items:center;gap:5px;transition:color .15s}
+.login-back:hover{color:var(--text)}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;margin-bottom:4px}
+.login-sub{font-size:11px;color:var(--muted);margin-bottom:22px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:10px;color:var(--muted);margin-bottom:5px;display:block;letter-spacing:.08em;text-transform:uppercase;font-family:'DM Mono',monospace}
+.form-input{width:100%;padding:10px 12px;border:1px solid var(--border2);border-radius:4px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--gold-mid)}
+.form-input.error{border-color:var(--red)}
+.error-msg{font-size:11px;color:var(--red);margin-top:5px;display:none}
+.error-msg.show{display:block}
+.login-btn{width:100%;padding:11px;border:none;border-radius:4px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all .15s;margin-top:4px}
+.login-btn.broker{background:var(--gold-mid);color:#fff}
+.login-btn.broker:hover{background:var(--gold)}
+.login-btn.client{background:var(--green);color:#fff}
+.login-btn.client:hover{background:#145f45}
+.login-btn:active{transform:scale(0.99)}
+
+/* ACCESS CODE HINT */
+.code-hint{font-size:10px;color:var(--muted);margin-top:10px;text-align:center;line-height:1.5}
+
+/* FOOTER */
+.footer{padding:16px 40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.footer-left{font-size:10px;color:var(--dim);letter-spacing:.06em}
+.footer-right{font-size:10px;color:var(--dim)}
+.footer-dot{width:6px;height:6px;border-radius:50%;background:var(--gold-mid);display:inline-block;margin-right:5px;vertical-align:middle}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.portals{animation:fadeUp .5s ease both}
+.hero-title{animation:fadeUp .4s ease both}
+.hero-sub{animation:fadeUp .45s ease both}
+
+@media(max-width:600px){
+  .portals{flex-direction:column;max-width:100%}
+  .header{padding:16px 20px}
+  .hero{padding:30px 20px}
+  .hero-title{font-size:30px}
+  .footer{padding:12px 20px;flex-direction:column;gap:4px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="page" id="mainPage">
+
+  <div class="header">
+    <div>
+      <div class="logo">PropTrack</div>
+      <div class="header-sub">Dubai · Property Portfolio Management</div>
+    </div>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+
+  <div class="hero">
+    <!-- DEFAULT: PORTAL SELECTION -->
+    <div id="portalSelect" style="display:flex;flex-direction:column;align-items:center;width:100%">
+      <div class="hero-eyebrow">Welcome</div>
+      <div class="hero-title">Your property portfolio,<br>always in view.</div>
+      <div class="hero-sub">Select your portal to continue</div>
+
+      <div class="portals">
+        <div class="portal-card broker" onclick="showLogin('broker')">
+          <div class="portal-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9A7B2E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+            </svg>
+          </div>
+          <div class="portal-label">Broker</div>
+          <div class="portal-title">Broker Portal</div>
+          <div class="portal-desc">Manage clients, properties, payments and cashflow across your portfolio</div>
+        </div>
+
+        <div class="portal-card client" onclick="showLogin('client')">
+          <div class="portal-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1A7A5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="portal-label">Client</div>
+          <div class="portal-title">Client Portal</div>
+          <div class="portal-desc">View your properties, upcoming payments and investment progress at a glance</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BROKER LOGIN -->
+    <div class="login-wrap" id="brokerLogin">
+      <div class="login-card">
+        <div class="login-back" onclick="showPortals()">← Back</div>
+        <div class="login-title">Broker Portal</div>
+        <div class="login-sub">Enter your password to access the dashboard</div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="brokerPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')brokerLogin()">
+          <div class="error-msg" id="brokerErr">Incorrect password. Please try again.</div>
+        </div>
+        <button class="login-btn broker" onclick="brokerLogin()">Access broker dashboard</button>
+      </div>
+    </div>
+
+    <!-- CLIENT LOGIN -->
+    <div class="login-wrap" id="clientLogin">
+      <div class="login-card">
+        <div class="login-back" onclick="showPortals()">← Back</div>
+        <div class="login-title">Client Portal</div>
+        <div class="login-sub">Enter your access code to view your portfolio</div>
+        <div class="form-group">
+          <label class="form-label">Access code</label>
+          <input class="form-input" id="clientCode" type="text" placeholder="e.g. PRASANNA2024" onkeydown="if(event.key==='Enter')clientLogin()" style="text-transform:uppercase;letter-spacing:.06em">
+          <div class="error-msg" id="clientErr">Access code not recognised. Please check and try again.</div>
+        </div>
+        <button class="login-btn client" onclick="clientLogin()">View my portfolio</button>
+        <div class="code-hint">Your access code was provided by your broker.<br>Contact them if you need assistance.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-left"><span class="footer-dot"></span>PropTrack · Dubai</div>
+    <div class="footer-right">Secured · Private · Read-only client access</div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// SUPABASE
+// ============================================================
+const SUPABASE_URL = 'https://wumcokaqgoncfsoizvqv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kAU0EeiQLYsbNR1s2mdJsA_JDR7kmML';
+
+// ============================================================
+// CREDENTIALS
+// ============================================================
+const BROKER_PASSWORD = 'proptrack';
+
+// Client access codes — maps code → client name in Supabase
+// Add a new row here for each client you onboard
+const CLIENT_CODES = {
+  'PRASANNA2024': 'Prasanna'
+  // 'CLIENT2024': 'Client Name'  ← add more here
+};
+
+// ============================================================
+// INIT
+// ============================================================
+document.getElementById('headerDate').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// ============================================================
+// NAV
+// ============================================================
+function showPortals() {
+  document.getElementById('portalSelect').style.display = 'flex';
+  document.getElementById('brokerLogin').classList.remove('visible');
+  document.getElementById('clientLogin').classList.remove('visible');
+  document.getElementById('brokerErr').classList.remove('show');
+  document.getElementById('clientErr').classList.remove('show');
+  document.getElementById('brokerPass').value = '';
+  document.getElementById('clientCode').value = '';
+}
+
+function showLogin(type) {
+  document.getElementById('portalSelect').style.display = 'none';
+  if (type === 'broker') {
+    document.getElementById('brokerLogin').classList.add('visible');
+    setTimeout(()=>document.getElementById('brokerPass').focus(), 100);
+  } else {
+    document.getElementById('clientLogin').classList.add('visible');
+    setTimeout(()=>document.getElementById('clientCode').focus(), 100);
+  }
+}
+
+// ============================================================
+// BROKER LOGIN
+// ============================================================
+function brokerLogin() {
+  const pass = document.getElementById('brokerPass').value;
+  const errEl = document.getElementById('brokerErr');
+  const inputEl = document.getElementById('brokerPass');
+
+  if (pass === BROKER_PASSWORD) {
+    errEl.classList.remove('show');
+    inputEl.classList.remove('error');
+    window.location.href = 'broker-dashboard.html';
+  } else {
+    errEl.classList.add('show');
+    inputEl.classList.add('error');
+    inputEl.focus();
+    inputEl.select();
+  }
+}
+
+// ============================================================
+// CLIENT LOGIN
+// ============================================================
+async function clientLogin() {
+  const code = document.getElementById('clientCode').value.trim().toUpperCase();
+  const errEl = document.getElementById('clientErr');
+  const inputEl = document.getElementById('clientCode');
+
+  if (!CLIENT_CODES[code]) {
+    errEl.classList.add('show');
+    inputEl.classList.add('error');
+    inputEl.focus();
+    return;
+  }
+
+  errEl.classList.remove('show');
+  inputEl.classList.remove('error');
+
+  // Store which client is logged in so client.html knows who to show
+  sessionStorage.setItem('proptrack_client', CLIENT_CODES[code]);
+  sessionStorage.setItem('proptrack_code', code);
+
+  window.location.href = 'client.html';
+}
+</script>
+</body>
+</html>
