@@ -4,189 +4,169 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PropTrack — Broker Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0B0D10;--surface:#111419;--surface2:#161B22;--surface3:#1C2128;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.12);
-  --text:#F0EBE3;--muted:#7A7570;--dim:#3D3A36;
-  --gold:#C9A84C;--gold-bg:rgba(201,168,76,0.1);--gold-border:rgba(201,168,76,0.3);
-  --green:#1D9E75;--green-bg:rgba(29,158,117,0.1);
-  --red:#D85A30;--red-bg:rgba(216,90,48,0.1);
-  --blue:#185FA5;--blue-bg:rgba(24,95,165,0.1);
+  --bg:#F7F5F0;--surface:#FFFFFF;--surface2:#F0EDE6;--surface3:#E8E4DB;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+  --text:#1A1814;--muted:#8A8278;--dim:#C5C0B8;
+  --gold:#9A7B2E;--gold-light:#F5EDD6;--gold-mid:#C9A84C;--gold-bg:rgba(201,168,76,0.1);--gold-border:rgba(201,168,76,0.3);
+  --green:#1A7A5A;--green-light:#E8F4EF;--green-bg:rgba(26,122,90,0.1);
+  --red:#B54A2A;--red-light:#F7EDE8;--red-bg:rgba(181,74,42,0.1);
+  --blue:#1A4A7A;--blue-light:#E8EFF7;--blue-bg:rgba(26,74,122,0.1);
   --purple:#534AB7;
-  --sidebar:220px;
+  --sidebar:224px;
 }
 html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
-a{color:inherit;text-decoration:none}
 
 /* LAYOUT */
 .app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:var(--sidebar);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
-.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar{width:var(--sidebar);background:var(--text);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column;background:var(--bg)}
 
 /* SIDEBAR */
-.sb-header{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
-.sb-logo{font-family:'Playfair Display',serif;font-size:16px;color:var(--gold);letter-spacing:.02em}
-.sb-tagline{font-size:10px;color:var(--muted);margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
-.sb-section{font-size:9px;color:var(--dim);padding:14px 18px 5px;letter-spacing:.1em;text-transform:uppercase}
-.sb-item{display:flex;align-items:center;gap:9px;padding:8px 18px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
-.sb-item:hover{color:var(--text);background:var(--surface2)}
-.sb-item.active{color:var(--gold);border-left-color:var(--gold);background:var(--gold-bg)}
+.sb-header{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sb-logo{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold-mid);letter-spacing:.04em}
+.sb-tagline{font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;letter-spacing:.08em;text-transform:uppercase}
+.sb-section{font-size:9px;color:rgba(255,255,255,0.25);padding:14px 20px 5px;letter-spacing:.1em;text-transform:uppercase}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 20px;font-size:12px;color:rgba(255,255,255,0.45);cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+.sb-item:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.05)}
+.sb-item.active{color:#F7F5F0;border-left-color:var(--gold-mid);background:rgba(201,168,76,0.1)}
 .sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.sb-client{margin:8px 12px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;cursor:pointer}
-.sb-client-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
-.sb-client-name{font-size:12px;font-weight:500;color:var(--text)}
-.sb-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);font-size:10px;color:var(--dim)}
+.sb-client{margin:10px 14px 6px;padding:10px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:5px;cursor:pointer;transition:background .15s}
+.sb-client:hover{background:rgba(255,255,255,0.1)}
+.sb-client-label{font-size:9px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.sb-client-name{font-size:12px;font-weight:500;color:#F7F5F0}
+.sb-footer{margin-top:auto;padding:14px 20px;border-top:1px solid rgba(255,255,255,0.08);font-size:10px;color:rgba(255,255,255,0.25)}
 
 /* TOPBAR */
-.topbar{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);flex-shrink:0}
-.topbar-title{font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text)}
+.topbar{padding:16px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);flex-shrink:0}
+.topbar-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text)}
 .topbar-sub{font-size:11px;color:var(--muted);margin-top:1px}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.btn{padding:7px 14px;border:1px solid var(--border2);border-radius:5px;background:transparent;font-size:11px;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s;letter-spacing:.01em;white-space:nowrap}
+.topbar-right{display:flex;align-items:center;gap:8px}
+
+/* BUTTONS */
+.btn{padding:7px 14px;border:1px solid var(--border2);border-radius:4px;background:transparent;font-size:11px;cursor:pointer;color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap}
 .btn:hover{background:var(--surface2)}
 .btn.primary{background:var(--gold-bg);border-color:var(--gold-border);color:var(--gold)}
-.btn.primary:hover{background:var(--gold);color:#000}
+.btn.primary:hover{background:var(--gold-mid);color:#fff}
 .btn.success{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.btn.success:hover{background:var(--green);color:#fff}
 .btn.danger{background:var(--red-bg);border-color:var(--red);color:var(--red)}
-.btn.sm{padding:5px 10px;font-size:10px}
+.btn.danger:hover{background:var(--red);color:#fff}
+.btn.sm{padding:4px 9px;font-size:10px}
 
-/* PAGE CONTENT */
-.page{padding:20px 24px;display:none}
+/* PAGE */
+.page{padding:22px 28px;display:none}
 .page.active{display:block}
 
-/* KPI GRID */
-.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.kcard{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;position:relative;overflow:hidden}
+/* KPI */
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.kcard{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px 18px;position:relative;overflow:hidden}
 .kcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.kcard.gold::before{background:var(--gold)}
+.kcard.gold::before{background:var(--gold-mid)}
 .kcard.green::before{background:var(--green)}
 .kcard.red::before{background:var(--red)}
 .kcard.blue::before{background:var(--blue)}
-.klabel{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Mono',monospace}
-.kval{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;line-height:1;color:var(--text)}
+.klabel{font-size:10px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;font-family:'DM Mono',monospace}
+.kval{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;line-height:1;color:var(--text)}
 .kval.gold{color:var(--gold)}.kval.green{color:var(--green)}.kval.red{color:var(--red)}.kval.blue{color:var(--blue)}
 .ksub{font-size:10px;color:var(--muted);margin-top:5px}
-.kbar{height:3px;background:var(--surface3);border-radius:2px;margin-top:10px;overflow:hidden}
-.kbar-fill{height:3px;border-radius:2px;transition:width 1s ease}
+.kbar{height:2px;background:var(--border);border-radius:2px;margin-top:10px;overflow:hidden}
+.kbar-fill{height:2px;border-radius:2px;transition:width 1s ease}
 
-/* GRID LAYOUTS */
+/* GRID */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.grid3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:14px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:16px}
 .card-title{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;font-family:'DM Mono',monospace}
 
-/* TABLES */
+/* TABLE */
 .tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl th{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;font-family:'DM Mono',monospace;white-space:nowrap}
-.tbl td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--text);vertical-align:middle}
-.tbl tbody tr:hover td{background:rgba(255,255,255,0.02);cursor:pointer}
+.tbl th{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);font-weight:400;font-family:'DM Mono',monospace;white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
 .tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:var(--surface2);cursor:pointer}
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:3px;font-size:9px;font-weight:500;letter-spacing:.04em;font-family:'DM Mono',monospace}
-.badge.paid{background:rgba(29,158,117,0.15);color:#1D9E75}
-.badge.due{background:rgba(201,168,76,0.12);color:#C9A84C}
-.badge.overdue{background:rgba(216,90,48,0.15);color:#D85A30}
-.badge.active{background:rgba(24,95,165,0.15);color:#5B9BD5}
-.badge.sold{background:rgba(83,74,183,0.15);color:#9B94E8}
+.badge.paid{background:var(--green-light);color:var(--green)}
+.badge.due{background:var(--gold-light);color:var(--gold)}
+.badge.overdue{background:var(--red-light);color:var(--red)}
+.badge.active{background:var(--blue-light);color:var(--blue)}
+.badge.sold{background:#EEEDFE;color:#534AB7}
 
-/* PROGRESS BAR */
-.pbar{display:inline-block;width:60px;height:3px;background:var(--surface3);border-radius:2px;vertical-align:middle;overflow:hidden}
+/* PROGRESS */
+.pbar{display:inline-block;width:60px;height:3px;background:var(--border);border-radius:2px;vertical-align:middle;overflow:hidden}
 .pbar-fill{height:3px;border-radius:2px}
 
-/* UPCOMING ITEMS */
+/* UPCOMING */
 .uitem{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
 .uitem:last-child{border-bottom:none}
-.uitem-left{}
-.uitem-prop{font-size:11px;font-weight:500}
+.uitem-prop{font-size:11px;font-weight:500;color:var(--text)}
 .uitem-label{font-size:10px;color:var(--muted);margin-top:1px}
-.uitem-right{text-align:right}
-.uitem-amt{font-size:11px;font-family:'DM Mono',monospace;font-weight:500}
-.uitem-date{font-size:10px;color:var(--muted);margin-top:1px}
-.uitem-days{font-size:10px;font-weight:500}
+.uitem-amt{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--text)}
+.uitem-date{font-size:10px;color:var(--muted);margin-top:1px;text-align:right}
 
-/* DEV BARS */
-.devbar{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.devbar-name{font-size:11px;width:90px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
-.devbar-track{flex:1;height:5px;background:var(--surface3);border-radius:3px;overflow:hidden}
-.devbar-fill{height:5px;border-radius:3px}
-.devbar-count{font-size:10px;color:var(--muted);width:20px;text-align:right;flex-shrink:0}
-
-/* YEARLY BARS */
-.ybar-row{display:flex;gap:8px;align-items:flex-end;height:100px;margin-bottom:8px}
-.ybar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
-.ybar{width:100%;border-radius:3px 3px 0 0;min-height:3px;transition:height .8s ease}
-.ybar-lbl{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace}
-.ybar-yr{font-size:9px;color:var(--dim);font-family:'DM Mono',monospace}
-
-/* INSTALLMENT CHECKLIST */
-.inst-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:5px;margin-bottom:4px;transition:background .15s}
+/* INSTALLMENT LIST */
+.inst-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:4px;margin-bottom:3px;transition:background .15s}
 .inst-item:hover{background:var(--surface2)}
-.inst-check{width:16px;height:16px;border-radius:4px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s}
-.inst-check.checked{background:var(--green);border-color:var(--green)}
-.inst-check.checked::after{content:'✓';font-size:9px;color:#fff}
-.inst-label{flex:1;font-size:11px}
+.inst-check{width:16px;height:16px;border-radius:4px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;font-size:9px}
+.inst-check.checked{background:var(--green-light);border-color:var(--green);color:var(--green)}
+.inst-label{flex:1;font-size:11px;color:var(--text)}
 .inst-label.checked{color:var(--muted);text-decoration:line-through}
 .inst-date{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace}
-.inst-amt{font-size:11px;font-family:'DM Mono',monospace;text-align:right;min-width:80px}
+.inst-amt{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;text-align:right;min-width:90px}
+
+/* FILTERS */
+.filters{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
+.fbtn{padding:5px 12px;border:1px solid var(--border);border-radius:20px;background:var(--surface);font-size:10px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;transition:all .15s}
+.fbtn.on{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-border)}
+.fbtn:hover{color:var(--text);border-color:var(--border2)}
+
+/* YEARLY */
+.yr-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.yr-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--dim)}
+.yr-total{font-size:13px;color:var(--text);font-family:'DM Mono',monospace}
 
 /* MODAL */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.overlay{position:fixed;inset:0;background:rgba(26,24,20,0.6);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
 .overlay.hidden{display:none}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:24px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);margin-bottom:18px}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:24px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.12)}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:18px}
 .form-group{margin-bottom:13px}
 .form-label{font-size:10px;color:var(--muted);margin-bottom:4px;display:block;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Mono',monospace}
-.form-input{width:100%;padding:9px 11px;border:1px solid var(--border2);border-radius:5px;background:var(--surface2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color .15s}
-.form-input:focus{border-color:var(--gold)}
-.form-input option{background:var(--surface2)}
+.form-input{width:100%;padding:9px 11px;border:1px solid var(--border2);border-radius:4px;background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--gold-mid)}
+.form-input option{background:var(--surface)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
 .inst-row{display:grid;grid-template-columns:1fr 100px 110px auto;gap:6px;margin-bottom:5px;align-items:center}
 .inst-row input{padding:7px 9px;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);font-size:11px;font-family:'DM Sans',sans-serif;width:100%;outline:none}
-.inst-row input:focus{border-color:var(--gold)}
+.inst-row input:focus{border-color:var(--gold-mid)}
 .inst-row-hdr{display:grid;grid-template-columns:1fr 100px 110px auto;gap:6px;margin-bottom:4px}
-.inst-hdr-label{font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;text-transform:uppercase;padding:0 2px}
+.inst-hdr-lbl{font-size:9px;color:var(--dim);font-family:'DM Mono',monospace;text-transform:uppercase;padding:0 2px}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
 
-/* PROPERTY DETAIL */
-.prop-hero{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:20px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:flex-start}
-.prop-hero-left{}
-.prop-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:600}
-.prop-meta{font-size:11px;color:var(--muted);margin-top:4px}
-.prop-price{font-family:'DM Mono',monospace;font-size:20px;color:var(--gold);margin-top:8px}
-.prop-hero-right{text-align:right}
-.prop-progress-ring{position:relative;width:70px;height:70px}
+/* SELL CALC */
+.sell-calc{background:var(--surface2);border-radius:4px;padding:12px;font-size:11px;margin-top:12px}
+.sell-calc-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.sell-calc-row.total{border-top:1px solid var(--border);padding-top:5px;margin-top:5px;font-weight:500}
 
-/* LOADING */
+/* LOADING / EMPTY */
 .loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--muted);font-size:12px;gap:8px}
-.spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+.spinner{width:14px;height:14px;border:1.5px solid var(--border2);border-top-color:var(--gold-mid);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* EMPTY */
-.empty{text-align:center;padding:40px;color:var(--muted);font-size:12px}
-
-/* PROFIT SECTION */
-.profit-card{background:var(--surface2);border:1px solid var(--gold-border);border-radius:6px;padding:16px;margin-bottom:14px}
-.profit-title{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'DM Mono',monospace}
+.empty{text-align:center;padding:32px;color:var(--muted);font-size:12px}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}
 
-/* FILTERS */
-.filters{display:flex;gap:5px;margin-bottom:14px;flex-wrap:wrap}
-.fbtn{padding:5px 11px;border:1px solid var(--border);border-radius:20px;background:transparent;font-size:10px;cursor:pointer;color:var(--muted);font-family:'DM Mono',monospace;transition:all .15s}
-.fbtn.on{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-border)}
-.fbtn:hover{color:var(--text)}
-
 @media(max-width:900px){
   .kgrid{grid-template-columns:repeat(2,1fr)}
-  .grid2,.grid3{grid-template-columns:1fr}
+  .grid2{grid-template-columns:1fr}
   .sidebar{width:180px}
 }
 </style>
@@ -202,8 +182,8 @@ a{color:inherit;text-decoration:none}
       <div class="sb-tagline">Broker Dashboard</div>
     </div>
 
-    <div style="padding:10px 12px 6px">
-      <div class="sb-client" onclick="openClientModal()">
+    <div style="padding:10px 14px 4px">
+      <div class="sb-client">
         <div class="sb-client-label">Active client</div>
         <div class="sb-client-name" id="sbClientName">Loading...</div>
       </div>
@@ -211,23 +191,23 @@ a{color:inherit;text-decoration:none}
 
     <div class="sb-section">Views</div>
     <div class="sb-item active" onclick="showPage('dash',this)">
-      <span class="sb-dot" style="background:var(--blue)"></span>Dashboard
+      <span class="sb-dot" style="background:#5B9BD5"></span>Dashboard
     </div>
     <div class="sb-item" onclick="showPage('props',this)">
-      <span class="sb-dot" style="background:var(--green)"></span>Properties
+      <span class="sb-dot" style="background:#1D9E75"></span>Properties
     </div>
     <div class="sb-item" onclick="showPage('payments',this)">
-      <span class="sb-dot" style="background:var(--gold)"></span>Payments
+      <span class="sb-dot" style="background:var(--gold-mid)"></span>Payments
     </div>
     <div class="sb-item" onclick="showPage('yearly',this)">
-      <span class="sb-dot" style="background:var(--purple)"></span>Yearly view
+      <span class="sb-dot" style="background:#534AB7"></span>Yearly view
     </div>
 
     <div class="sb-section">Developers</div>
     <div id="sbDevList"></div>
 
     <div class="sb-section">Quick links</div>
-    <div class="sb-item" onclick="filterUpcoming(90)">
+    <div class="sb-item" onclick="filterUpcoming()">
       <span class="sb-dot" style="background:var(--red)"></span>Upcoming (90d)
     </div>
     <div class="sb-item" onclick="filterOverdue()">
@@ -236,27 +216,25 @@ a{color:inherit;text-decoration:none}
 
     <div class="sb-footer">
       <div id="sbDate"></div>
-      <div style="margin-top:3px;color:var(--gold);font-size:9px">● Live data</div>
+      <div style="margin-top:3px;color:var(--gold-mid);font-size:9px">● Live data</div>
     </div>
   </div>
 
   <!-- MAIN -->
   <div class="main">
-
     <div class="topbar">
       <div>
         <div class="topbar-title" id="pageTitle">Portfolio Overview</div>
-        <div class="topbar-sub" id="pageSubtitle">All properties · live from database</div>
+        <div class="topbar-sub" id="pageSub">All properties · live from database</div>
       </div>
       <div class="topbar-right">
-        <button class="btn" onclick="refreshData()">↻ Refresh</button>
+        <button class="btn" onclick="loadData()">↻ Refresh</button>
         <button class="btn primary" onclick="openAddProperty()">+ Add property</button>
       </div>
     </div>
 
-    <!-- DASHBOARD PAGE -->
-    <div id="page-dash" class="page active" style="padding:20px 24px">
-
+    <!-- DASHBOARD -->
+    <div id="page-dash" class="page active">
       <div class="kgrid">
         <div class="kcard gold">
           <div class="klabel">Total investment</div>
@@ -266,17 +244,17 @@ a{color:inherit;text-decoration:none}
         <div class="kcard green">
           <div class="klabel">Total paid</div>
           <div class="kval green" id="kPaid">—</div>
-          <div class="ksub" id="kPaidPct">—% of portfolio</div>
+          <div class="ksub" id="kPaidPct">—</div>
           <div class="kbar"><div class="kbar-fill" id="kPaidBar" style="background:var(--green);width:0%"></div></div>
         </div>
         <div class="kcard red">
           <div class="klabel">Balance due</div>
           <div class="kval red" id="kDue">—</div>
-          <div class="ksub" id="kDueSub">across all properties</div>
+          <div class="ksub">across all properties</div>
         </div>
         <div class="kcard blue">
           <div class="klabel">Next payment</div>
-          <div class="kval" style="font-size:14px;color:var(--gold)" id="kNext">—</div>
+          <div class="kval" style="font-size:15px;color:var(--gold)" id="kNext">—</div>
           <div class="ksub" id="kNextSub">—</div>
         </div>
       </div>
@@ -284,15 +262,11 @@ a{color:inherit;text-decoration:none}
       <div class="grid2">
         <div class="card">
           <div class="card-title">Payments by year — paid vs due</div>
-          <div style="position:relative;height:180px">
-            <canvas id="chartYearly"></canvas>
-          </div>
+          <div style="position:relative;height:180px"><canvas id="chartYearly"></canvas></div>
         </div>
         <div class="card">
           <div class="card-title">Investment by developer</div>
-          <div style="position:relative;height:180px">
-            <canvas id="chartDev"></canvas>
-          </div>
+          <div style="position:relative;height:180px"><canvas id="chartDev"></canvas></div>
         </div>
       </div>
 
@@ -301,17 +275,10 @@ a{color:inherit;text-decoration:none}
           <div class="card-title">All properties — payment progress</div>
           <div style="overflow-x:auto">
             <table class="tbl">
-              <thead>
-                <tr>
-                  <th>Property</th>
-                  <th>Developer</th>
-                  <th>Purchase price</th>
-                  <th>Paid</th>
-                  <th>Balance</th>
-                  <th>Progress</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
+              <thead><tr>
+                <th>Property</th><th>Developer</th><th>Purchase price</th>
+                <th>Paid</th><th>Balance</th><th>Progress</th><th>Status</th>
+              </tr></thead>
               <tbody id="dashPropBody"></tbody>
             </table>
           </div>
@@ -321,11 +288,10 @@ a{color:inherit;text-decoration:none}
           <div id="dashUpcoming"></div>
         </div>
       </div>
-
     </div>
 
-    <!-- PROPERTIES PAGE -->
-    <div id="page-props" class="page" style="padding:20px 24px">
+    <!-- PROPERTIES -->
+    <div id="page-props" class="page">
       <div class="filters" id="propsFilter">
         <button class="fbtn on" onclick="filterProps('all',this)">All</button>
         <button class="fbtn" onclick="filterProps('NAKHEEL',this)">Nakheel</button>
@@ -337,29 +303,19 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="card">
         <table class="tbl">
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>Unit ref</th>
-              <th>Developer</th>
-              <th>Type</th>
-              <th>Purchase price</th>
-              <th>Paid</th>
-              <th>Due</th>
-              <th>Progress</th>
-              <th>Handover</th>
-              <th>Status</th>
-              <th></th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Property</th><th>Unit ref</th><th>Developer</th><th>Type</th>
+            <th>Purchase price</th><th>Paid</th><th>Due</th><th>Progress</th>
+            <th>Handover</th><th>Status</th><th></th>
+          </tr></thead>
           <tbody id="propsBody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- PAYMENTS PAGE -->
-    <div id="page-payments" class="page" style="padding:20px 24px">
-      <div class="filters">
+    <!-- PAYMENTS -->
+    <div id="page-payments" class="page">
+      <div class="filters" id="payFilters">
         <button class="fbtn on" onclick="filterPayments('all',this)">All</button>
         <button class="fbtn" onclick="filterPayments('due',this)">Due</button>
         <button class="fbtn" onclick="filterPayments('paid',this)">Paid</button>
@@ -367,24 +323,17 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="card">
         <table class="tbl">
-          <thead>
-            <tr>
-              <th>Property</th>
-              <th>Installment</th>
-              <th>Amount</th>
-              <th>Due date</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>Property</th><th>Installment</th><th>Amount</th>
+            <th>Due date</th><th>Type</th><th>Status</th><th>Action</th>
+          </tr></thead>
           <tbody id="paymentsBody"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- YEARLY PAGE -->
-    <div id="page-yearly" class="page" style="padding:20px 24px">
+    <!-- YEARLY -->
+    <div id="page-yearly" class="page">
       <div id="yearlyContent"></div>
     </div>
 
@@ -395,7 +344,6 @@ a{color:inherit;text-decoration:none}
 <div class="overlay hidden" id="addPropertyModal">
   <div class="modal">
     <div class="modal-title">Add new property</div>
-
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Project name</label>
@@ -406,7 +354,6 @@ a{color:inherit;text-decoration:none}
         <input class="form-input" id="fpRef" placeholder="e.g. PJA-FRL-V089">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Developer</label>
@@ -425,7 +372,6 @@ a{color:inherit;text-decoration:none}
         <input class="form-input" id="fpBeds" placeholder="e.g. 5 Bed Villa">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">Purchase price (AED)</label>
@@ -436,7 +382,6 @@ a{color:inherit;text-decoration:none}
         <input class="form-input" id="fpHandover" placeholder="e.g. Q4 2027">
       </div>
     </div>
-
     <div class="form-row">
       <div class="form-group">
         <label class="form-label">DLD fee (AED)</label>
@@ -447,24 +392,21 @@ a{color:inherit;text-decoration:none}
         <input class="form-input" id="fpComm" type="number" placeholder="Optional">
       </div>
     </div>
-
     <div class="form-group">
       <label class="form-label">Notes</label>
-      <input class="form-input" id="fpNotes" placeholder="Optional notes">
+      <input class="form-input" id="fpNotes" placeholder="Optional">
     </div>
-
     <div class="form-group">
       <label class="form-label" style="margin-bottom:8px">Payment plan</label>
       <div class="inst-row-hdr">
-        <div class="inst-hdr-label">Label</div>
-        <div class="inst-hdr-label">Amount (AED)</div>
-        <div class="inst-hdr-label">Due date</div>
-        <div class="inst-hdr-label"></div>
+        <div class="inst-hdr-lbl">Label</div>
+        <div class="inst-hdr-lbl">Amount (AED)</div>
+        <div class="inst-hdr-lbl">Due date</div>
+        <div></div>
       </div>
       <div id="instRows"></div>
       <button class="btn sm" onclick="addInstRow()" style="margin-top:6px">+ Add installment</button>
     </div>
-
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('addPropertyModal')">Cancel</button>
       <button class="btn primary" onclick="saveProperty()">Save property</button>
@@ -474,7 +416,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- PROPERTY DETAIL MODAL -->
 <div class="overlay hidden" id="propDetailModal">
-  <div class="modal" style="max-width:640px">
+  <div class="modal" style="max-width:620px">
     <div id="propDetailContent"></div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('propDetailModal')">Close</button>
@@ -485,7 +427,7 @@ a{color:inherit;text-decoration:none}
 
 <!-- SELL MODAL -->
 <div class="overlay hidden" id="sellModal">
-  <div class="modal" style="max-width:420px">
+  <div class="modal" style="max-width:400px">
     <div class="modal-title">Book sale & profit</div>
     <div class="form-group">
       <label class="form-label">Sale price (AED)</label>
@@ -499,16 +441,10 @@ a{color:inherit;text-decoration:none}
       <label class="form-label">Notes</label>
       <input class="form-input" id="fSaleNotes" placeholder="Optional">
     </div>
-    <div id="sellCalc" style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:5px;font-size:11px;display:none">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="color:var(--muted)">Purchase price</span><span id="scPP" style="font-family:'DM Mono',monospace"></span>
-      </div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px">
-        <span style="color:var(--muted)">Sale price</span><span id="scSP" style="font-family:'DM Mono',monospace;color:var(--gold)"></span>
-      </div>
-      <div style="display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:5px;margin-top:5px">
-        <span style="font-weight:500">Booked profit</span><span id="scProfit" style="font-family:'DM Mono',monospace;color:var(--green);font-weight:500"></span>
-      </div>
+    <div class="sell-calc" id="sellCalc" style="display:none">
+      <div class="sell-calc-row"><span style="color:var(--muted)">Purchase price</span><span id="scPP" style="font-family:'DM Mono',monospace"></span></div>
+      <div class="sell-calc-row"><span style="color:var(--muted)">Sale price</span><span id="scSP" style="font-family:'DM Mono',monospace;color:var(--gold)"></span></div>
+      <div class="sell-calc-row total"><span>Booked profit</span><span id="scProfit" style="font-family:'DM Mono',monospace;color:var(--green)"></span></div>
     </div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal('sellModal')">Cancel</button>
@@ -518,182 +454,119 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <script>
-// ============================================================
-// SUPABASE CONFIG
-// ============================================================
 const SUPABASE_URL = 'https://wumcokaqgoncfsoizvqv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kAU0EeiQLYsbNR1s2mdJsA_JDR7kmML';
 
 const sb = {
   async query(table, params='') {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json'
-      }
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'}
     });
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async insert(table, data) {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify(data)
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+      body:JSON.stringify(data)
     });
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   },
   async update(table, id, data) {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
-      method: 'PATCH',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=representation'
-      },
-      body: JSON.stringify(data)
+      method:'PATCH',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+      body:JSON.stringify(data)
     });
     if (!r.ok) throw new Error(await r.text());
     return r.json();
   }
 };
 
-// ============================================================
-// STATE
-// ============================================================
 const DCOLS = {
-  'NAKHEEL':'#1D9E75','EMAAR':'#185FA5','MAJID AL FUTTAIM':'#C9A84C',
-  'DUBAI PROPERTIES':'#534AB7','DIVINE ONE':'#993C1D','TILAL AL GHAF':'#993556','OTHER':'#7A7570'
+  'NAKHEEL':'#1D9E75','EMAAR':'#185FA5','MAJID AL FUTTAIM':'#9A7B2E',
+  'DUBAI PROPERTIES':'#534AB7','DIVINE ONE':'#993C1D','TILAL AL GHAF':'#993556','OTHER':'#8A8278'
 };
 const MN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-let STATE = { props:[], installments:[], clients:[], activeClient:null, currentPropId:null };
-let payFilter = 'all';
-let propFilter = 'all';
-let chartsBuilt = false;
-
-// ============================================================
-// HELPERS
-// ============================================================
-function fm(n) {
-  if (!n && n!==0) return '—';
-  n = Math.round(n);
-  if (n >= 1e9) return 'AED ' + (n/1e9).toFixed(2) + 'B';
-  if (n >= 1e6) return 'AED ' + (n/1e6).toFixed(1) + 'M';
-  if (n >= 1e3) return 'AED ' + (n/1e3).toFixed(0) + 'K';
-  return 'AED ' + n.toLocaleString();
-}
-function fmFull(n) {
-  if (!n) return '—';
-  return 'AED ' + Math.round(n).toLocaleString();
-}
-function fd(s) {
-  if (!s) return '—';
-  try { const d = new Date(s); return MN[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear(); }
-  catch(e) { return s; }
-}
-function getDevColor(dev) { return DCOLS[dev] || '#7A7570'; }
-function getPaid(prop) {
-  return (STATE.installments.filter(i=>i.property_id===prop.id&&i.is_paid)).reduce((s,i)=>s+(i.amount_aed||0),0);
-}
-function getDue(prop) {
-  return (STATE.installments.filter(i=>i.property_id===prop.id&&!i.is_paid)).reduce((s,i)=>s+(i.amount_aed||0),0);
-}
-function getInstallments(propId) {
-  return STATE.installments.filter(i=>i.property_id===propId).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
-}
 const today = new Date();
+let STATE = {props:[],installments:[],clients:[],activeClient:null,currentPropId:null};
+let payFilter='all', propFilter='all', chartsBuilt=false;
 
-// ============================================================
-// DATA LOADING
-// ============================================================
+function fm(n) {
+  if (!n&&n!==0) return '—';
+  n=Math.round(n);
+  if (n>=1e9) return 'AED '+(n/1e9).toFixed(2)+'B';
+  if (n>=1e6) return 'AED '+(n/1e6).toFixed(1)+'M';
+  if (n>=1e3) return 'AED '+(n/1e3).toFixed(0)+'K';
+  return 'AED '+n.toLocaleString();
+}
+function fmFull(n){ return n?'AED '+Math.round(n).toLocaleString():'—'; }
+function fd(s){
+  if (!s) return '—';
+  try{const d=new Date(s);return MN[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();}catch(e){return s;}
+}
+function getCol(dev){ return DCOLS[dev]||'#8A8278'; }
+function getPaid(p){ return STATE.installments.filter(i=>i.property_id===p.id&&i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
+function getDue(p){ return STATE.installments.filter(i=>i.property_id===p.id&&!i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
+function getInsts(propId){ return STATE.installments.filter(i=>i.property_id===propId).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date)); }
+
 async function loadData() {
   try {
-    const [props, insts, clients] = await Promise.all([
-      sb.query('properties', '?order=created_at.asc&select=*'),
-      sb.query('installments', '?order=due_date.asc&select=*'),
-      sb.query('clients', '?select=*')
+    const [props,insts,clients] = await Promise.all([
+      sb.query('properties','?order=created_at.asc&select=*'),
+      sb.query('installments','?order=due_date.asc&select=*'),
+      sb.query('clients','?select=*')
     ]);
-    STATE.props = props;
-    STATE.installments = insts;
-    STATE.clients = clients;
-    if (clients.length > 0) {
-      STATE.activeClient = clients[0];
-      document.getElementById('sbClientName').textContent = clients[0].full_name;
-    }
+    STATE.props=props; STATE.installments=insts; STATE.clients=clients;
+    if (clients.length){ STATE.activeClient=clients[0]; document.getElementById('sbClientName').textContent=clients[0].full_name; }
+    document.getElementById('sbDate').textContent=today.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
     renderAll();
   } catch(e) {
+    document.getElementById('sbClientName').textContent='Error loading';
     console.error(e);
-    document.getElementById('sbClientName').textContent = 'Error loading';
   }
 }
 
-function renderAll() {
-  renderSidebarDevs();
-  renderDashboard();
-  renderProperties();
-  renderPayments();
-  renderYearly();
-}
+function renderAll(){ renderSidebar(); renderDashboard(); renderProperties(); renderPayments(); renderYearly(); }
 
-// ============================================================
-// SIDEBAR
-// ============================================================
-function renderSidebarDevs() {
-  const devs = [...new Set(STATE.props.map(p=>p.developer))];
-  document.getElementById('sbDevList').innerHTML = devs.map(d=>`
+function renderSidebar(){
+  const devs=[...new Set(STATE.props.map(p=>p.developer))];
+  document.getElementById('sbDevList').innerHTML=devs.map(d=>`
     <div class="sb-item" onclick="filterProps('${d}',null);showPage('props',null)">
-      <span class="sb-dot" style="background:${getDevColor(d)}"></span>${d.split(' ').slice(0,2).join(' ')}
+      <span class="sb-dot" style="background:${getCol(d)}"></span>${d.split(' ').slice(0,2).join(' ')}
     </div>`).join('');
-  document.getElementById('sbDate').textContent = today.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
 }
 
-// ============================================================
-// DASHBOARD
-// ============================================================
-function renderDashboard() {
-  const props = STATE.props;
+function renderDashboard(){
+  const props=STATE.props;
   if (!props.length) return;
+  const totalPP=props.reduce((s,p)=>s+(p.purchase_price||0),0);
+  const totalPaid=props.reduce((s,p)=>s+getPaid(p),0);
+  const totalDue=props.reduce((s,p)=>s+getDue(p),0);
+  const pct=totalPP?Math.round(totalPaid/totalPP*1000)/10:0;
 
-  const totalPP = props.reduce((s,p)=>s+(p.purchase_price||0),0);
-  const totalPaid = props.reduce((s,p)=>s+getPaid(p),0);
-  const totalDue = props.reduce((s,p)=>s+getDue(p),0);
-  const pct = totalPP ? Math.round(totalPaid/totalPP*1000)/10 : 0;
+  document.getElementById('kTotalInv').textContent=fm(totalPP);
+  document.getElementById('kTotalSub').textContent=`${props.length} properties · ${[...new Set(props.map(p=>p.developer))].length} developers`;
+  document.getElementById('kPaid').textContent=fm(totalPaid);
+  document.getElementById('kPaidPct').textContent=`${pct}% of portfolio`;
+  document.getElementById('kPaidBar').style.width=pct+'%';
+  document.getElementById('kDue').textContent=fm(totalDue);
 
-  document.getElementById('kTotalInv').textContent = fm(totalPP);
-  document.getElementById('kTotalSub').textContent = `${props.length} properties · ${[...new Set(props.map(p=>p.developer))].length} developers`;
-  document.getElementById('kPaid').textContent = fm(totalPaid);
-  document.getElementById('kPaidPct').textContent = `${pct}% of portfolio`;
-  document.getElementById('kPaidBar').style.width = pct + '%';
-  document.getElementById('kDue').textContent = fm(totalDue);
-
-  // Next payment
-  const future = STATE.installments.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today)
-    .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
-  if (future.length) {
-    const n = future[0];
-    const prop = props.find(p=>p.id===n.property_id);
-    const days = Math.ceil((new Date(n.due_date)-today)/864e5);
-    document.getElementById('kNext').textContent = fm(n.amount_aed);
-    document.getElementById('kNextSub').textContent = `${prop?.project_name?.slice(0,20)||'—'} · in ${days}d`;
+  const future=STATE.installments.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
+  if (future.length){
+    const n=future[0],prop=props.find(p=>p.id===n.property_id),days=Math.ceil((new Date(n.due_date)-today)/864e5);
+    document.getElementById('kNext').textContent=fm(n.amount_aed);
+    document.getElementById('kNextSub').textContent=`${prop?.project_name?.slice(0,20)||'—'} · in ${days}d`;
   }
 
   // Property table
-  const tbody = document.getElementById('dashPropBody');
-  tbody.innerHTML = [...props].sort((a,b)=>(b.purchase_price||0)-(a.purchase_price||0)).map(p=>{
-    const paid=getPaid(p),pp=p.purchase_price||0,pct2=pp?Math.round(paid/pp*100):0;
-    const col=getDevColor(p.developer);
+  document.getElementById('dashPropBody').innerHTML=[...props].sort((a,b)=>(b.purchase_price||0)-(a.purchase_price||0)).map(p=>{
+    const paid=getPaid(p),pp=p.purchase_price||0,pct2=pp?Math.round(paid/pp*100):0,col=getCol(p.developer);
     return `<tr onclick="openPropDetail('${p.id}')">
       <td style="font-weight:500;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.project_name}</td>
-      <td><span style="font-size:9px;padding:2px 5px;border-radius:3px;background:${col}22;color:${col}">${(p.developer||'').split(' ')[0]}</span></td>
+      <td><span style="font-size:9px;padding:2px 6px;border-radius:3px;background:${col}18;color:${col}">${(p.developer||'').split(' ')[0]}</span></td>
       <td style="font-family:'DM Mono',monospace;font-size:10px">${fm(pp)}</td>
       <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green)">${fm(paid)}</td>
       <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--red)">${fm(getDue(p))}</td>
@@ -706,55 +579,51 @@ function renderDashboard() {
   }).join('');
 
   // Upcoming
-  const up90 = new Date(today); up90.setDate(up90.getDate()+90);
-  const upcoming = STATE.installments.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today&&new Date(i.due_date)<=up90)
-    .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date)).slice(0,8);
-  const upEl = document.getElementById('dashUpcoming');
-  if (!upcoming.length) { upEl.innerHTML='<div class="empty">No payments in next 90 days</div>'; return; }
-  upEl.innerHTML = upcoming.map(i=>{
-    const prop = props.find(p=>p.id===i.property_id);
-    const d = new Date(i.due_date);
-    const days = Math.ceil((d-today)/864e5);
-    const dc = days<14?'var(--red)':days<30?'var(--gold)':'var(--green)';
+  const up90=new Date(today);up90.setDate(up90.getDate()+90);
+  const upcoming=STATE.installments.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today&&new Date(i.due_date)<=up90).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date)).slice(0,8);
+  const upEl=document.getElementById('dashUpcoming');
+  if (!upcoming.length){upEl.innerHTML='<div class="empty">No payments in next 90 days</div>';return;}
+  upEl.innerHTML=upcoming.map(i=>{
+    const prop=props.find(p=>p.id===i.property_id),d=new Date(i.due_date),days=Math.ceil((d-today)/864e5);
+    const dc=days<14?'var(--red)':days<30?'var(--gold)':'var(--green)';
     return `<div class="uitem">
       <div>
         <div class="uitem-prop">${prop?.project_name?.slice(0,22)||'—'}</div>
         <div class="uitem-label">${i.label}</div>
       </div>
-      <div class="uitem-right">
+      <div style="text-align:right">
         <div class="uitem-amt">${fm(i.amount_aed)}</div>
-        <div class="uitem-days" style="color:${dc}">${MN[d.getMonth()]} ${d.getDate()} · ${days}d</div>
+        <div class="uitem-date" style="color:${dc}">${MN[d.getMonth()]} ${d.getDate()} · ${days}d</div>
       </div>
     </div>`;
   }).join('');
 
-  // Charts
   buildCharts();
 }
 
-function buildCharts() {
-  if (chartsBuilt) { Chart.getChart('chartYearly')?.destroy(); Chart.getChart('chartDev')?.destroy(); }
-
-  const byYear = {};
+function buildCharts(){
+  if (chartsBuilt){Chart.getChart('chartYearly')?.destroy();Chart.getChart('chartDev')?.destroy();}
+  const byYear={};
   STATE.installments.forEach(i=>{
     if (!i.due_date) return;
-    const yr = new Date(i.due_date).getFullYear();
+    const yr=new Date(i.due_date).getFullYear();
     if (!byYear[yr]) byYear[yr]={paid:0,due:0};
-    if (i.is_paid) byYear[yr].paid+=i.amount_aed||0;
-    else byYear[yr].due+=i.amount_aed||0;
+    if (i.is_paid) byYear[yr].paid+=i.amount_aed||0; else byYear[yr].due+=i.amount_aed||0;
   });
-  const yrs = Object.keys(byYear).sort();
+  const yrs=Object.keys(byYear).sort();
 
   new Chart(document.getElementById('chartYearly'),{
     type:'bar',
     data:{labels:yrs,datasets:[
-      {label:'Paid',data:yrs.map(y=>Math.round((byYear[y].paid||0)/1e6)),backgroundColor:'#1D9E75',borderRadius:3},
-      {label:'Due',data:yrs.map(y=>Math.round((byYear[y].due||0)/1e6)),backgroundColor:'#D85A30',borderRadius:3}
+      {label:'Paid',data:yrs.map(y=>Math.round((byYear[y].paid||0)/1e6)),backgroundColor:'#1A7A5A',borderRadius:3},
+      {label:'Due',data:yrs.map(y=>Math.round((byYear[y].due||0)/1e6)),backgroundColor:'#C9A84C55',borderColor:'#C9A84C',borderWidth:1,borderRadius:3}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'AED '+c.parsed.y+'M'}}},
-      scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:9},color:'#7A7570'}},
-              y:{stacked:true,grid:{color:'rgba(255,255,255,0.04)'},ticks:{callback:v=>v+'M',font:{size:9},color:'#7A7570'}}}}
+      scales:{
+        x:{stacked:true,grid:{display:false},ticks:{font:{size:9},color:'#8A8278'}},
+        y:{stacked:true,grid:{color:'rgba(0,0,0,0.05)'},ticks:{callback:v=>v+'M',font:{size:9},color:'#8A8278'}}
+      }}
   });
 
   const devVal={};
@@ -762,31 +631,25 @@ function buildCharts() {
   const devArr=Object.entries(devVal).sort((a,b)=>b[1]-a[1]);
   new Chart(document.getElementById('chartDev'),{
     type:'doughnut',
-    data:{labels:devArr.map(d=>d[0].split(' ').slice(0,2).join(' ')),
-      datasets:[{data:devArr.map(d=>Math.round(d[1]/1e6)),
-        backgroundColor:devArr.map(d=>getDevColor(d[0])),borderWidth:2,borderColor:'#111419'}]},
+    data:{
+      labels:devArr.map(d=>d[0].split(' ').slice(0,2).join(' ')),
+      datasets:[{data:devArr.map(d=>Math.round(d[1]/1e6)),backgroundColor:devArr.map(d=>getCol(d[0])),borderWidth:2,borderColor:'#FFFFFF'}]
+    },
     options:{responsive:true,maintainAspectRatio:false,cutout:'68%',
-      plugins:{legend:{position:'right',labels:{color:'#7A7570',font:{size:10},boxWidth:8,padding:10}},
-        tooltip:{callbacks:{label:c=>'AED '+c.parsed+'M'}}}}
+      plugins:{legend:{position:'right',labels:{color:'#8A8278',font:{size:10},boxWidth:8,padding:8}},tooltip:{callbacks:{label:c=>'AED '+c.parsed+'M'}}}}
   });
-  chartsBuilt = true;
+  chartsBuilt=true;
 }
 
-// ============================================================
-// PROPERTIES PAGE
-// ============================================================
-function renderProperties(filter) {
-  const f = filter || propFilter;
-  const props = f==='all' ? STATE.props : STATE.props.filter(p=>p.developer===f);
-  const tbody = document.getElementById('propsBody');
-  tbody.innerHTML = props.map(p=>{
-    const paid=getPaid(p),due=getDue(p),pp=p.purchase_price||0;
-    const pct=pp?Math.round(paid/pp*100):0;
-    const col=getDevColor(p.developer);
+function renderProperties(filter){
+  const f=filter||propFilter;
+  const props=f==='all'?STATE.props:STATE.props.filter(p=>p.developer===f);
+  document.getElementById('propsBody').innerHTML=props.map(p=>{
+    const paid=getPaid(p),due=getDue(p),pp=p.purchase_price||0,pct=pp?Math.round(paid/pp*100):0,col=getCol(p.developer);
     return `<tr onclick="openPropDetail('${p.id}')">
       <td style="font-weight:500">${p.project_name}</td>
       <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${p.unit_ref||'—'}</td>
-      <td><span style="font-size:9px;padding:2px 6px;border-radius:3px;background:${col}22;color:${col}">${p.developer||'—'}</span></td>
+      <td><span style="font-size:9px;padding:2px 6px;border-radius:3px;background:${col}18;color:${col}">${p.developer||'—'}</span></td>
       <td style="color:var(--muted);font-size:11px">${p.bedrooms||'—'}</td>
       <td style="font-family:'DM Mono',monospace;font-size:10px">${fm(pp)}</td>
       <td style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green)">${fm(paid)}</td>
@@ -802,298 +665,224 @@ function renderProperties(filter) {
   }).join('');
 }
 
-function filterProps(f, btn) {
-  propFilter = f;
+function filterProps(f,btn){
+  propFilter=f;
   document.querySelectorAll('#propsFilter .fbtn').forEach(b=>b.classList.remove('on'));
   if (btn) btn.classList.add('on');
   renderProperties(f);
 }
 
-// ============================================================
-// PAYMENTS PAGE
-// ============================================================
-function renderPayments(filter) {
-  const f = filter || payFilter;
-  let insts = [...STATE.installments];
-  const now = new Date();
-
-  if (f==='paid') insts = insts.filter(i=>i.is_paid);
-  else if (f==='due') insts = insts.filter(i=>!i.is_paid&&new Date(i.due_date)>=now);
-  else if (f==='overdue') insts = insts.filter(i=>!i.is_paid&&new Date(i.due_date)<now);
-
+function renderPayments(filter){
+  const f=filter||payFilter;
+  const now=new Date();
+  let insts=[...STATE.installments];
+  if (f==='paid') insts=insts.filter(i=>i.is_paid);
+  else if (f==='due') insts=insts.filter(i=>!i.is_paid&&new Date(i.due_date)>=now);
+  else if (f==='overdue') insts=insts.filter(i=>!i.is_paid&&new Date(i.due_date)<now);
   insts.sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
 
-  const tbody = document.getElementById('paymentsBody');
-  tbody.innerHTML = insts.map(i=>{
-    const prop = STATE.props.find(p=>p.id===i.property_id);
-    const d = new Date(i.due_date);
-    const overdue = !i.is_paid && d < now;
-    const status = i.is_paid ? 'paid' : overdue ? 'overdue' : 'due';
-    const days = !i.is_paid ? Math.ceil((d-now)/864e5) : null;
+  document.getElementById('paymentsBody').innerHTML=insts.map(i=>{
+    const prop=STATE.props.find(p=>p.id===i.property_id),d=new Date(i.due_date),overdue=!i.is_paid&&d<now;
+    const status=i.is_paid?'paid':overdue?'overdue':'due';
+    const days=!i.is_paid?Math.ceil((d-now)/864e5):null;
     return `<tr>
       <td style="font-weight:500">${prop?.project_name||'—'}</td>
       <td style="color:var(--muted)">${i.label}</td>
       <td style="font-family:'DM Mono',monospace;font-size:11px">${fm(i.amount_aed)}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:10px;color:${overdue?'var(--red)':'var(--muted)'}">${fd(i.due_date)}${days!==null?` <span style="color:${days<0?'var(--red)':days<14?'var(--gold)':'var(--muted)'}">(${days<0?Math.abs(days)+'d ago':days+'d'})</span>`:''}</td>
-      <td><span style="font-size:9px;padding:2px 5px;border-radius:3px;background:var(--surface2);color:var(--muted)">${i.trigger_type==='milestone'?`${i.milestone_pct}% milestone`:'scheduled'}</span></td>
+      <td style="font-family:'DM Mono',monospace;font-size:10px;color:${overdue?'var(--red)':'var(--muted)'}">
+        ${fd(i.due_date)}${days!==null?` <span style="color:${days<0?'var(--red)':days<14?'var(--gold)':'var(--muted)'}">(${days<0?Math.abs(days)+'d ago':days+'d'})</span>`:''}
+      </td>
+      <td><span style="font-size:9px;padding:2px 6px;border-radius:3px;background:var(--surface2);color:var(--muted)">${i.trigger_type==='milestone'?`${i.milestone_pct}% milestone`:'scheduled'}</span></td>
       <td><span class="badge ${status}">${status}</span></td>
       <td>${!i.is_paid?`<button class="btn sm success" onclick="markPaid('${i.id}')">Mark paid</button>`:`<span style="font-size:10px;color:var(--muted)">${fd(i.paid_on)}</span>`}</td>
     </tr>`;
   }).join('');
 }
 
-function filterPayments(f, btn) {
-  payFilter = f;
-  document.querySelectorAll('.filters .fbtn').forEach(b=>b.classList.remove('on'));
+function filterPayments(f,btn){
+  payFilter=f;
+  document.querySelectorAll('#payFilters .fbtn').forEach(b=>b.classList.remove('on'));
   if (btn) btn.classList.add('on');
   renderPayments(f);
 }
 
-async function markPaid(instId) {
-  const today = new Date().toISOString().split('T')[0];
+async function markPaid(instId){
+  const d=new Date().toISOString().split('T')[0];
   try {
-    await sb.update('installments', instId, { is_paid: true, paid_on: today });
-    const inst = STATE.installments.find(i=>i.id===instId);
-    if (inst) { inst.is_paid=true; inst.paid_on=today; }
+    await sb.update('installments',instId,{is_paid:true,paid_on:d});
+    const inst=STATE.installments.find(i=>i.id===instId);
+    if (inst){inst.is_paid=true;inst.paid_on=d;}
     renderAll();
-  } catch(e) { alert('Error: ' + e.message); }
+  } catch(e){alert('Error: '+e.message);}
 }
 
-// ============================================================
-// YEARLY VIEW
-// ============================================================
-function renderYearly() {
-  const byYear = {};
+function renderYearly(){
+  const byYear={};
   STATE.installments.forEach(i=>{
     if (!i.due_date) return;
-    const d = new Date(i.due_date);
-    const yr = d.getFullYear(), mo = d.getMonth();
-    if (!byYear[yr]) byYear[yr] = { months: Array(12).fill(null).map(()=>({paid:0,due:[]})) };
-    const prop = STATE.props.find(p=>p.id===i.property_id);
-    if (i.is_paid) byYear[yr].months[mo].paid += i.amount_aed||0;
-    else byYear[yr].months[mo].due.push({...i, propName: prop?.project_name||'—'});
+    const d=new Date(i.due_date),yr=d.getFullYear(),mo=d.getMonth();
+    if (!byYear[yr]) byYear[yr]=Array(12).fill(null).map(()=>({paid:0,due:[]}));
+    const prop=STATE.props.find(p=>p.id===i.property_id);
+    if (i.is_paid) byYear[yr][mo].paid+=i.amount_aed||0;
+    else byYear[yr][mo].due.push({...i,propName:prop?.project_name||'—'});
   });
-
-  const yrs = Object.keys(byYear).sort();
-  const el = document.getElementById('yearlyContent');
-  el.innerHTML = yrs.map(yr=>{
-    const data = byYear[yr];
-    const totalPaid = data.months.reduce((s,m)=>s+m.paid,0);
-    const totalDue = data.months.reduce((s,m)=>s+m.due.reduce((ss,i)=>ss+(i.amount_aed||0),0),0);
-    const total = totalPaid + totalDue;
-
-    const monthCols = data.months.map((m,mi)=>{
-      const mDue = m.due.reduce((s,i)=>s+(i.amount_aed||0),0);
-      const mTotal = m.paid + mDue;
-      if (!mTotal) return '';
-      return `<div style="margin-bottom:4px">
-        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:4px">${MN[mi]}</div>
-        ${m.paid?`<div style="font-size:10px;color:var(--green);margin-bottom:2px">${fm(m.paid)} paid</div>`:''}
-        ${m.due.map(i=>`<div class="uitem" style="padding:6px 0">
-          <div>
-            <div style="font-size:10px;font-weight:500">${i.propName.slice(0,20)}</div>
-            <div style="font-size:9px;color:var(--muted)">${i.label}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-size:10px;font-family:'DM Mono',monospace">${fm(i.amount_aed)}</div>
-            <button class="btn sm success" onclick="markPaid('${i.id}')" style="margin-top:3px;font-size:9px;padding:3px 7px">Paid</button>
-          </div>
-        </div>`).join('')}
-      </div>`;
-    }).filter(Boolean);
-
+  const yrs=Object.keys(byYear).sort();
+  document.getElementById('yearlyContent').innerHTML=yrs.map(yr=>{
+    const data=byYear[yr];
+    const totalPaid=data.reduce((s,m)=>s+m.paid,0),totalDue=data.reduce((s,m)=>s+m.due.reduce((ss,i)=>ss+(i.amount_aed||0),0),0);
+    const activeMos=data.map((m,mi)=>({...m,mi})).filter(m=>m.paid||m.due.length);
     return `<div style="margin-bottom:24px">
-      <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)">
-        <span style="font-family:'Playfair Display',serif;font-size:28px;color:var(--dim)">${yr}</span>
-        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text)">${fm(total)}</span>
-        <span style="font-size:10px;color:var(--green)">${fm(totalPaid)} paid</span>
-        <span style="font-size:10px;color:var(--red)">${fm(totalDue)} due</span>
+      <div class="yr-hdr">
+        <span class="yr-num">${yr}</span>
+        <span class="yr-total">${fm(totalPaid+totalDue)}</span>
+        ${totalPaid?`<span style="font-size:11px;color:var(--green)">${fm(totalPaid)} paid</span>`:''}
+        ${totalDue?`<span style="font-size:11px;color:var(--red)">${fm(totalDue)} due</span>`:''}
       </div>
-      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
-        ${monthCols.length ? monthCols.map(c=>`<div class="card" style="padding:10px">${c}</div>`).join('') : '<div style="color:var(--muted);font-size:11px">No payments this year</div>'}
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px">
+        ${activeMos.map(m=>`<div class="card" style="padding:10px">
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">${MN[m.mi]}</div>
+          ${m.paid?`<div style="font-size:10px;color:var(--green);margin-bottom:4px">${fm(m.paid)} paid</div>`:''}
+          ${m.due.map(i=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-size:10px;font-weight:500;color:var(--text)">${i.propName.slice(0,16)}</div>
+              <div style="font-size:9px;color:var(--muted)">${i.label}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10px;font-family:'DM Mono',monospace">${fm(i.amount_aed)}</div>
+              <button class="btn sm success" onclick="markPaid('${i.id}')" style="font-size:9px;padding:2px 6px;margin-top:2px">Paid</button>
+            </div>
+          </div>`).join('')}
+        </div>`).join('')}
       </div>
     </div>`;
   }).join('');
 }
 
-// ============================================================
-// PROPERTY DETAIL
-// ============================================================
-function openPropDetail(propId) {
-  STATE.currentPropId = propId;
-  const prop = STATE.props.find(p=>p.id===propId);
+function openPropDetail(propId){
+  STATE.currentPropId=propId;
+  const prop=STATE.props.find(p=>p.id===propId);
   if (!prop) return;
-  const insts = getInstallments(propId);
-  const paid = getPaid(prop), due = getDue(prop), pp = prop.purchase_price||0;
-  const pct = pp ? Math.round(paid/pp*100) : 0;
-  const col = getDevColor(prop.developer);
-
-  document.getElementById('propDetailContent').innerHTML = `
-    <div class="prop-hero" style="background:transparent;border:none;padding:0 0 16px 0;margin-bottom:14px;border-bottom:1px solid var(--border)">
-      <div>
-        <div style="font-size:10px;color:${col};text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;font-family:'DM Mono',monospace">${prop.developer}</div>
-        <div style="font-family:'Playfair Display',serif;font-size:22px">${prop.project_name}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:3px">${prop.unit_ref||''} · ${prop.bedrooms||''} · Handover: ${prop.handover_date||'TBC'}</div>
-        <div style="font-family:'DM Mono',monospace;font-size:18px;color:var(--gold);margin-top:8px">${fmFull(pp)}</div>
-      </div>
-      <div style="text-align:right">
+  const insts=getInsts(propId),paid=getPaid(prop),pp=prop.purchase_price||0,pct=pp?Math.round(paid/pp*100):0,col=getCol(prop.developer);
+  document.getElementById('propDetailContent').innerHTML=`
+    <div style="padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid var(--border)">
+      <div style="font-size:9px;color:${col};text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;font-family:'DM Mono',monospace">${prop.developer}</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400">${prop.project_name}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">${prop.unit_ref||''} · ${prop.bedrooms||''} · Handover: ${prop.handover_date||'TBC'}</div>
+      <div style="display:flex;align-items:baseline;gap:16px;margin-top:10px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">${fmFull(pp)}</div>
         <div style="font-size:11px;color:var(--green)">${fm(paid)} paid</div>
-        <div style="font-size:11px;color:var(--red);margin-top:3px">${fm(due)} due</div>
-        <div style="font-size:22px;font-family:'DM Mono',monospace;color:${col};margin-top:6px">${pct}%</div>
-        <div style="font-size:10px;color:var(--muted)">paid</div>
+        <div style="font-size:11px;color:var(--red)">${fm(getDue(prop))} due</div>
+        <div style="font-size:18px;font-family:'DM Mono',monospace;color:${col};margin-left:auto">${pct}%</div>
       </div>
     </div>
-
-    ${prop.notes?`<div style="font-size:11px;color:var(--muted);margin-bottom:12px;padding:10px;background:var(--surface2);border-radius:5px">${prop.notes}</div>`:''}
-
-    <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'DM Mono',monospace">Payment schedule</div>
-
+    ${prop.notes?`<div style="font-size:11px;color:var(--muted);margin-bottom:12px;padding:10px;background:var(--surface2);border-radius:4px">${prop.notes}</div>`:''}
+    <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;font-family:'DM Mono',monospace">Payment schedule</div>
     ${insts.map(i=>`
       <div class="inst-item">
-        <div class="inst-check ${i.is_paid?'checked':''}" onclick="markPaid('${i.id}')"></div>
+        <div class="inst-check ${i.is_paid?'checked':''}" onclick="markPaid('${i.id}')">${i.is_paid?'✓':''}</div>
         <div style="flex:1">
           <div class="inst-label ${i.is_paid?'checked':''}">${i.label}${i.trigger_type==='milestone'?` <span style="font-size:9px;color:var(--muted);background:var(--surface2);padding:1px 5px;border-radius:2px">${i.milestone_pct}%</span>`:''}</div>
           <div style="font-size:10px;color:var(--muted);margin-top:1px">${i.is_paid?`Paid ${fd(i.paid_on)}`:`Due ${fd(i.due_date)}`}</div>
         </div>
         <div class="inst-amt" style="color:${i.is_paid?'var(--muted)':'var(--text)'}">${fmFull(i.amount_aed)}</div>
-      </div>
-    `).join('')}
+      </div>`).join('')}
   `;
-
-  document.getElementById('propSellBtn').style.display = prop.status==='sold' ? 'none' : '';
+  document.getElementById('propSellBtn').style.display=prop.status==='sold'?'none':'';
   document.getElementById('propDetailModal').classList.remove('hidden');
 }
 
-// ============================================================
-// SELL FLOW
-// ============================================================
-document.getElementById('propSellBtn').onclick = () => {
+document.getElementById('propSellBtn').onclick=()=>{
+  const prop=STATE.props.find(p=>p.id===STATE.currentPropId);
   closeModal('propDetailModal');
-  const prop = STATE.props.find(p=>p.id===STATE.currentPropId);
-  document.getElementById('fSaleDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('sellCalc').style.display = 'none';
-  document.getElementById('fSalePrice').value = '';
-  document.getElementById('fSalePrice').oninput = function() {
-    const sp = parseFloat(this.value)||0;
-    if (sp && prop) {
-      document.getElementById('scPP').textContent = fmFull(prop.purchase_price);
-      document.getElementById('scSP').textContent = fmFull(sp);
-      document.getElementById('scProfit').textContent = fmFull(sp - (prop.purchase_price||0));
-      document.getElementById('sellCalc').style.display = 'block';
+  document.getElementById('fSaleDate').value=new Date().toISOString().split('T')[0];
+  document.getElementById('sellCalc').style.display='none';
+  document.getElementById('fSalePrice').value='';
+  document.getElementById('fSalePrice').oninput=function(){
+    const sp=parseFloat(this.value)||0;
+    if (sp&&prop){
+      document.getElementById('scPP').textContent=fmFull(prop.purchase_price);
+      document.getElementById('scSP').textContent=fmFull(sp);
+      document.getElementById('scProfit').textContent=fmFull(sp-(prop.purchase_price||0));
+      document.getElementById('sellCalc').style.display='block';
     }
   };
   document.getElementById('sellModal').classList.remove('hidden');
 };
 
-async function confirmSale() {
-  const sp = parseFloat(document.getElementById('fSalePrice').value);
-  const date = document.getElementById('fSaleDate').value;
-  if (!sp || !date) { alert('Please enter sale price and date'); return; }
+async function confirmSale(){
+  const sp=parseFloat(document.getElementById('fSalePrice').value),date=document.getElementById('fSaleDate').value;
+  if (!sp||!date){alert('Please enter sale price and date');return;}
   try {
-    await sb.update('properties', STATE.currentPropId, {
-      status: 'sold', sale_price: sp, listed_for_sale_date: date,
-      notes: document.getElementById('fSaleNotes').value || null
-    });
-    const prop = STATE.props.find(p=>p.id===STATE.currentPropId);
-    if (prop) { prop.status='sold'; prop.sale_price=sp; }
-    closeModal('sellModal');
-    renderAll();
-  } catch(e) { alert('Error: ' + e.message); }
+    await sb.update('properties',STATE.currentPropId,{status:'sold',sale_price:sp,listed_for_sale_date:date,notes:document.getElementById('fSaleNotes').value||null});
+    const prop=STATE.props.find(p=>p.id===STATE.currentPropId);
+    if (prop){prop.status='sold';prop.sale_price=sp;}
+    closeModal('sellModal');renderAll();
+  } catch(e){alert('Error: '+e.message);}
 }
 
-// ============================================================
-// ADD PROPERTY
-// ============================================================
-let instRowCount = 0;
-function openAddProperty() {
-  instRowCount = 0;
-  document.getElementById('instRows').innerHTML = '';
+let instRowCount=0;
+function openAddProperty(){
+  instRowCount=0;
+  document.getElementById('instRows').innerHTML='';
   ['fpName','fpRef','fpBeds','fpHandover','fpNotes'].forEach(id=>document.getElementById(id).value='');
   ['fpPrice','fpDld','fpComm'].forEach(id=>document.getElementById(id).value='');
   addInstRow();
   document.getElementById('addPropertyModal').classList.remove('hidden');
 }
-function addInstRow() {
+function addInstRow(){
   instRowCount++;
-  const div = document.createElement('div');
-  div.className = 'inst-row';
-  div.id = 'ir-'+instRowCount;
-  div.innerHTML = `
-    <input placeholder="e.g. Booking Deposit" />
-    <input type="number" placeholder="Amount AED" />
-    <input type="date" />
-    <button class="btn sm danger" onclick="document.getElementById('ir-${instRowCount}').remove()">✕</button>
-  `;
+  const div=document.createElement('div');
+  div.className='inst-row';div.id='ir-'+instRowCount;
+  div.innerHTML=`
+    <input placeholder="e.g. Booking Deposit"/>
+    <input type="number" placeholder="Amount AED"/>
+    <input type="date"/>
+    <button class="btn sm danger" onclick="document.getElementById('ir-${instRowCount}').remove()">✕</button>`;
   document.getElementById('instRows').appendChild(div);
 }
-async function saveProperty() {
-  const name = document.getElementById('fpName').value.trim();
-  const price = parseFloat(document.getElementById('fpPrice').value)||0;
-  if (!name || !price) { alert('Property name and price are required'); return; }
-
-  const clientId = STATE.activeClient?.id;
-  const brokerId = '00000000-0000-0000-0000-000000000001';
-
+async function saveProperty(){
+  const name=document.getElementById('fpName').value.trim(),price=parseFloat(document.getElementById('fpPrice').value)||0;
+  if (!name||!price){alert('Property name and price are required');return;}
   try {
-    const [newProp] = await sb.insert('properties', {
-      client_id: clientId, broker_id: brokerId,
-      project_name: name,
-      unit_ref: document.getElementById('fpRef').value.trim()||null,
-      developer: document.getElementById('fpDev').value,
-      bedrooms: document.getElementById('fpBeds').value.trim()||null,
-      purchase_price: price,
-      handover_date: document.getElementById('fpHandover').value.trim()||null,
-      dld_fee: parseFloat(document.getElementById('fpDld').value)||null,
-      commission: parseFloat(document.getElementById('fpComm').value)||null,
-      notes: document.getElementById('fpNotes').value.trim()||null,
-      status: 'active'
+    const [newProp]=await sb.insert('properties',{
+      client_id:STATE.activeClient?.id,broker_id:'00000000-0000-0000-0000-000000000001',
+      project_name:name,unit_ref:document.getElementById('fpRef').value.trim()||null,
+      developer:document.getElementById('fpDev').value,bedrooms:document.getElementById('fpBeds').value.trim()||null,
+      purchase_price:price,handover_date:document.getElementById('fpHandover').value.trim()||null,
+      dld_fee:parseFloat(document.getElementById('fpDld').value)||null,
+      commission:parseFloat(document.getElementById('fpComm').value)||null,
+      notes:document.getElementById('fpNotes').value.trim()||null,status:'active'
     });
-
     STATE.props.push(newProp);
-
-    const rows = document.querySelectorAll('#instRows .inst-row');
-    for (const row of rows) {
-      const inputs = row.querySelectorAll('input');
-      const label = inputs[0].value.trim();
-      const amount = parseFloat(inputs[1].value)||0;
-      const date = inputs[2].value;
-      if (label && amount) {
-        const isMilestone = label.toLowerCase().includes('%');
-        const [inst] = await sb.insert('installments', {
-          property_id: newProp.id, label, amount_aed: amount,
-          due_date: date||null, trigger_type: isMilestone?'milestone':'date',
-          milestone_pct: isMilestone ? parseInt(label)||null : null,
-          is_paid: false
+    for (const row of document.querySelectorAll('#instRows .inst-row')){
+      const inputs=row.querySelectorAll('input');
+      const label=inputs[0].value.trim(),amount=parseFloat(inputs[1].value)||0,date=inputs[2].value;
+      if (label&&amount){
+        const isMilestone=label.toLowerCase().includes('%');
+        const [inst]=await sb.insert('installments',{
+          property_id:newProp.id,label,amount_aed:amount,due_date:date||null,
+          trigger_type:isMilestone?'milestone':'date',
+          milestone_pct:isMilestone?parseInt(label)||null:null,is_paid:false
         });
         STATE.installments.push(inst);
       }
     }
-
-    closeModal('addPropertyModal');
-    renderAll();
-  } catch(e) { alert('Error saving: ' + e.message); }
+    closeModal('addPropertyModal');renderAll();
+  } catch(e){alert('Error saving: '+e.message);}
 }
 
-// ============================================================
-// UTILITIES
-// ============================================================
-function showPage(id, el) {
+function showPage(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
   document.getElementById('page-'+id).classList.add('active');
   if (el) el.classList.add('active');
-  const titles = {dash:'Portfolio Overview',props:'Properties',payments:'Payment Tracker',yearly:'Yearly View'};
-  document.getElementById('pageTitle').textContent = titles[id]||'';
+  const titles={dash:'Portfolio Overview',props:'Properties',payments:'Payment Tracker',yearly:'Yearly View'};
+  document.getElementById('pageTitle').textContent=titles[id]||'';
 }
-function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-function openClientModal() {}
-function filterUpcoming() { showPage('payments', document.querySelectorAll('.sb-item')[2]); filterPayments('due',null); }
-function filterOverdue() { showPage('payments', document.querySelectorAll('.sb-item')[2]); filterPayments('overdue',null); }
-async function refreshData() { await loadData(); }
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function filterUpcoming(){showPage('payments',document.querySelectorAll('.sb-item')[2]);filterPayments('due',document.querySelectorAll('#payFilters .fbtn')[1]);}
+function filterOverdue(){showPage('payments',document.querySelectorAll('.sb-item')[2]);filterPayments('overdue',document.querySelectorAll('#payFilters .fbtn')[3]);}
 
-// ============================================================
-// INIT
-// ============================================================
 loadData();
 </script>
 </body>
