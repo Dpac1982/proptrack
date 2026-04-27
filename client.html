@@ -5,59 +5,53 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Portfolio — Prasanna</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#F7F5F0;--surface:#FFFFFF;--surface2:#F0EDE6;
+  --bg:#F7F5F0;--surface:#FFFFFF;--surface2:#F0EDE6;--surface3:#E8E4DB;
   --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
   --text:#1A1814;--muted:#8A8278;--dim:#C5C0B8;
-  --gold:#9A7B2E;--gold-light:#F5EDD6;--gold-mid:#C9A84C;
+  --gold:#9A7B2E;--gold-light:#F5EDD6;--gold-mid:#C9A84C;--gold-bg:rgba(201,168,76,0.12);
   --green:#1A7A5A;--green-light:#E8F4EF;
   --red:#B54A2A;--red-light:#F7EDE8;
   --blue:#1A4A7A;--blue-light:#E8EFF7;
 }
 html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px}
 
-/* HEADER */
 .header{background:var(--text);color:#F7F5F0;padding:28px 40px;display:flex;align-items:flex-end;justify-content:space-between}
 .header-logo{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-mid);margin-bottom:6px}
 .header-name{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;letter-spacing:.01em;line-height:1}
-.header-sub{font-size:11px;color:rgba(247,245,240,0.45);margin-top:5px;letter-spacing:.06em}
+.header-sub{font-size:11px;color:rgba(247,245,240,0.4);margin-top:5px;letter-spacing:.06em}
 .header-right{text-align:right}
 .header-date{font-size:11px;color:rgba(247,245,240,0.4);letter-spacing:.06em}
 .header-badge{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:4px 10px;border:1px solid rgba(201,168,76,0.3);border-radius:20px;font-size:10px;color:var(--gold-mid);letter-spacing:.06em}
 .header-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold-mid);display:inline-block}
 
-/* NAV */
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;gap:0}
-.ntab{padding:14px 20px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);letter-spacing:.04em;transition:all .2s}
+.ntab{padding:14px 20px;font-size:12px;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);letter-spacing:.04em;transition:all .2s;white-space:nowrap}
 .ntab.on{color:var(--gold);border-bottom-color:var(--gold)}
 .ntab:hover{color:var(--text)}
 
-/* WRAP */
-.wrap{max-width:1100px;margin:0 auto;padding:32px 40px}
-
-/* SECTION TITLES */
+.wrap{max-width:1120px;margin:0 auto;padding:32px 40px}
 .sec-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--text);margin-bottom:4px}
 .sec-sub{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:20px}
 
-/* SUMMARY CARDS */
-.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:32px}
+/* KPI */
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
 .sum-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px 22px;position:relative}
 .sum-card-accent{position:absolute;top:0;left:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
 .sum-label{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
 .sum-val{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;line-height:1;color:var(--text)}
 .sum-sub{font-size:11px;color:var(--muted);margin-top:6px}
 .sum-bar{height:2px;background:var(--border);border-radius:2px;margin-top:12px;overflow:hidden}
-.sum-bar-fill{height:2px;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.sum-bar-fill{height:2px;border-radius:2px}
 
-/* NEXT PAYMENT ALERT */
+/* NEXT ALERT */
 .next-alert{background:var(--gold-light);border:1px solid rgba(154,123,46,0.2);border-radius:3px;padding:16px 22px;margin-bottom:28px;display:flex;align-items:center;justify-content:space-between}
-.next-alert-left{}
 .next-alert-label{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
-.next-alert-prop{font-size:14px;font-weight:500;color:var(--text)}
+.next-alert-prop{font-size:14px;font-weight:500}
 .next-alert-inst{font-size:11px;color:var(--muted);margin-top:2px}
-.next-alert-right{text-align:right}
 .next-alert-amt{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;color:var(--gold)}
 .next-alert-date{font-size:11px;color:var(--muted);margin-top:2px}
 .days-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:500;letter-spacing:.04em;margin-top:4px}
@@ -65,8 +59,31 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);
 .days-pill.soon{background:var(--gold-light);color:var(--gold)}
 .days-pill.ok{background:var(--green-light);color:var(--green)}
 
-/* PROPERTY CARDS */
-.prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:32px}
+/* CHART CARDS */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px}
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px}
+.chart-title{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px;font-family:'DM Mono',monospace}
+.chart-wrap{position:relative}
+
+/* INFOGRAPHIC: DEVELOPER LEGEND */
+.dev-legend{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.dev-leg-item{display:flex;align-items:center;gap:8px}
+.dev-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dev-leg-name{flex:1;font-size:11px;color:var(--text)}
+.dev-leg-count{font-size:11px;font-family:'DM Mono',monospace;color:var(--muted)}
+.dev-leg-val{font-size:11px;font-family:'DM Mono',monospace;color:var(--text);min-width:60px;text-align:right}
+
+/* UPCOMING */
+.up-item{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--surface);border:1px solid var(--border);border-radius:3px;margin-bottom:6px;transition:border-color .15s}
+.up-item:hover{border-color:var(--border2)}
+.up-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-right:12px}
+.up-item-prop{font-size:13px;font-weight:500}
+.up-item-inst{font-size:11px;color:var(--muted);margin-top:1px}
+.up-item-amt{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400}
+.up-item-date{font-size:10px;color:var(--muted);margin-top:2px;text-align:right}
+
+/* PROPERTIES */
+.prop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
 .prop-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;cursor:pointer;transition:border-color .2s,box-shadow .2s}
 .prop-card:hover{border-color:var(--border2);box-shadow:0 2px 16px rgba(0,0,0,0.06)}
 .prop-card-top{padding:18px 20px 14px;border-bottom:1px solid var(--border)}
@@ -77,74 +94,70 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);
 .prop-stat{flex:1}
 .prop-stat-label{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
 .prop-stat-val{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400}
-.prop-card-progress{width:100%;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px}
-.prop-card-bar{height:2px;border-radius:2px;transition:width 1s ease}
-.prop-card-pct{font-size:10px;color:var(--muted);text-align:right;margin-top:4px}
+.prop-progress{width:100%;height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:12px}
+.prop-progress-fill{height:2px;border-radius:2px}
+.prop-pct{font-size:10px;color:var(--muted);text-align:right;margin-top:4px}
+.handover-badge{display:inline-block;padding:3px 9px;background:var(--blue-light);color:var(--blue);border-radius:2px;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
 
-/* UPCOMING LIST */
-.up-section{margin-bottom:32px}
-.up-item{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;margin-bottom:6px;transition:border-color .15s}
-.up-item:hover{border-color:var(--border2)}
-.up-item-left{display:flex;align-items:center;gap:14px}
-.up-item-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.up-item-info{}
-.up-item-prop{font-size:13px;font-weight:500;color:var(--text)}
-.up-item-inst{font-size:11px;color:var(--muted);margin-top:1px}
-.up-item-right{text-align:right}
-.up-item-amt{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--text)}
-.up-item-date{font-size:10px;color:var(--muted);margin-top:2px}
-
-/* SCHEDULE TABLE */
-.sched-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:14px}
-.sched-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+/* SCHEDULE */
+.sched-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden;margin-bottom:10px}
+.sched-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:background .15s}
+.sched-header:hover{background:var(--surface2)}
 .sched-prop-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400}
-.sched-prop-dev{font-size:10px;color:var(--muted);margin-top:2px}
-.sched-header-right{text-align:right}
-.sched-pct{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)}
-.sched-pct-label{font-size:10px;color:var(--muted)}
+.sched-prop-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.sched-pct{font-family:'Cormorant Garamond',serif;font-size:22px}
+.sched-pct-label{font-size:10px;color:var(--muted);text-align:right}
 .sched-body{display:none}
 .sched-body.open{display:block}
-.sched-row{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--border)}
+.sched-row{display:flex;align-items:center;padding:9px 20px;border-bottom:1px solid var(--border)}
 .sched-row:last-child{border-bottom:none}
-.sched-row.paid{opacity:.45}
-.sched-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px;font-size:8px;color:var(--green)}
+.sched-row.paid{opacity:.4}
+.sched-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:12px;font-size:8px}
 .sched-check.checked{background:var(--green-light);border-color:var(--green);color:var(--green)}
-.sched-label{flex:1;font-size:12px;color:var(--text)}
-.sched-type{font-size:9px;color:var(--muted);background:var(--surface2);padding:1px 6px;border-radius:2px;margin-left:6px}
-.sched-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-right:16px}
-.sched-amt{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;min-width:120px;text-align:right}
+.sched-label{flex:1;font-size:12px}
+.sched-type-tag{font-size:9px;color:var(--muted);background:var(--surface2);padding:1px 6px;border-radius:2px;margin-left:6px}
+.sched-date{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-right:16px;white-space:nowrap}
+.sched-amt{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;min-width:130px;text-align:right}
 
-/* YEARLY CASHFLOW */
-.cf-year{margin-bottom:28px}
-.cf-year-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
-.cf-year-num{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--dim)}
-.cf-year-total{font-size:13px;color:var(--text);font-family:'DM Mono',monospace}
-.cf-month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
-.cf-month{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px}
-.cf-month-name{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.cf-month-amt{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--text)}
-.cf-month-items{margin-top:4px}
-.cf-month-item{font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* CASHFLOW YEAR TABS */
+.yr-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.yr-tab{padding:7px 18px;border:1px solid var(--border2);border-radius:3px;font-size:12px;cursor:pointer;color:var(--muted);background:var(--surface);transition:all .15s;font-family:'DM Mono',monospace;letter-spacing:.04em}
+.yr-tab.on{background:var(--text);color:#F7F5F0;border-color:var(--text)}
+.yr-tab:hover:not(.on){background:var(--surface2);color:var(--text)}
 
-/* PAGE SECTIONS */
+/* CASHFLOW YEAR CONTENT */
+.yr-content{display:none}
+.yr-content.on{display:block}
+.yr-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.yr-sum-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px 16px}
+.yr-sum-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.yr-sum-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400}
+.yr-chart-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:20px}
+.yr-month-list{display:flex;flex-direction:column;gap:6px}
+.yr-month-item{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px 16px}
+.yr-month-name{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.yr-month-payments{display:flex;flex-direction:column;gap:6px}
+.yr-pay-row{display:flex;align-items:center;justify-content:space-between}
+.yr-pay-prop{font-size:12px;font-weight:500}
+.yr-pay-label{font-size:10px;color:var(--muted)}
+.yr-pay-amt{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400}
+.yr-pay-status-paid{font-size:9px;color:var(--green);background:var(--green-light);padding:2px 7px;border-radius:2px}
+.yr-pay-status-due{font-size:9px;color:var(--gold);background:var(--gold-light);padding:2px 7px;border-radius:2px}
+
 .pg{display:none}.pg.on{display:block}
-
-/* LOADING */
 .loading{display:flex;align-items:center;justify-content:center;padding:80px;color:var(--muted);gap:10px;font-size:13px}
 .spinner{width:16px;height:16px;border:1.5px solid var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* HANDOVER BADGE */
-.handover-badge{display:inline-block;padding:3px 9px;background:var(--blue-light);color:var(--blue);border-radius:2px;font-size:9px;letter-spacing:.06em;text-transform:uppercase}
-
 @media(max-width:768px){
-  .header{padding:20px 20px;flex-direction:column;align-items:flex-start;gap:10px}
-  .header-right{text-align:left}
+  .header{padding:20px;flex-direction:column;align-items:flex-start;gap:10px}
   .nav{padding:0 20px;overflow-x:auto}
-  .wrap{padding:20px 20px}
+  .wrap{padding:20px}
   .sum-grid{grid-template-columns:repeat(2,1fr)}
+  .chart-row{grid-template-columns:1fr}
   .prop-grid{grid-template-columns:1fr}
-  .cf-month-grid{grid-template-columns:repeat(3,1fr)}
+  .yr-chart-row{grid-template-columns:1fr}
+  .yr-summary{grid-template-columns:1fr 1fr}
 }
 </style>
 </head>
@@ -186,15 +199,16 @@ html,body{min-height:100%;font-family:'DM Sans',sans-serif;background:var(--bg);
   <!-- SCHEDULE -->
   <div id="pg-schedule" class="pg">
     <div class="sec-title">Payment schedule</div>
-    <div class="sec-sub">Full installment breakdown across all properties</div>
+    <div class="sec-sub">Full installment breakdown — click any property to expand</div>
     <div id="schedContent"></div>
   </div>
 
   <!-- CASHFLOW -->
   <div id="pg-cashflow" class="pg">
     <div class="sec-title">Cashflow by year</div>
-    <div class="sec-sub">Projected payment obligations through handover</div>
-    <div id="cfContent"></div>
+    <div class="sec-sub">Your payment obligations year by year through handover</div>
+    <div class="yr-tabs" id="yrTabs"></div>
+    <div id="yrContent"></div>
   </div>
 
 </div>
@@ -215,8 +229,10 @@ const DCOLS = {
   'NAKHEEL':'#1D9E75','EMAAR':'#185FA5','MAJID AL FUTTAIM':'#9A7B2E',
   'DUBAI PROPERTIES':'#534AB7','DIVINE ONE':'#993C1D','TILAL AL GHAF':'#993556','OTHER':'#8A8278'
 };
+
 const today = new Date();
 let PROPS=[], INSTS=[];
+let overviewChartsBuilt = false;
 
 function fm(n) {
   if (!n&&n!==0) return '—';
@@ -226,14 +242,14 @@ function fm(n) {
   if (n>=1e3) return 'AED '+(n/1e3).toFixed(0)+'K';
   return 'AED '+n.toLocaleString();
 }
-function fmFull(n) { return n?'AED '+Math.round(n).toLocaleString():'—'; }
-function fd(s) {
+function fmFull(n){ return n?'AED '+Math.round(n).toLocaleString():'—'; }
+function fd(s){
   if (!s) return '—';
   const d=new Date(s); return MN[d.getMonth()]+' '+d.getDate()+', '+d.getFullYear();
 }
 function getPaid(p){ return INSTS.filter(i=>i.property_id===p.id&&i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
 function getDue(p){ return INSTS.filter(i=>i.property_id===p.id&&!i.is_paid).reduce((s,i)=>s+(i.amount_aed||0),0); }
-function getDevColor(dev){ return DCOLS[dev]||'#8A8278'; }
+function getCol(dev){ return DCOLS[dev]||'#8A8278'; }
 
 async function load() {
   document.getElementById('headerDate').textContent = today.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
@@ -249,7 +265,7 @@ async function load() {
     renderSchedule();
     renderCashflow();
   } catch(e) {
-    document.getElementById('overviewContent').innerHTML = `<div class="loading">Unable to load portfolio data. Please try again.</div>`;
+    document.getElementById('overviewContent').innerHTML = `<div class="loading">Unable to load portfolio. Please refresh.</div>`;
   }
 }
 
@@ -262,19 +278,26 @@ function renderOverview() {
   const totalDue = PROPS.reduce((s,p)=>s+getDue(p),0);
   const pct = totalPP?Math.round(totalPaid/totalPP*1000)/10:0;
 
-  // Next payment
   const next = INSTS.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today)
     .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date))[0];
-  const nextProp = next ? PROPS.find(p=>p.id===next.property_id) : null;
-  const nextDays = next ? Math.ceil((new Date(next.due_date)-today)/864e5) : null;
+  const nextProp = next?PROPS.find(p=>p.id===next.property_id):null;
+  const nextDays = next?Math.ceil((new Date(next.due_date)-today)/864e5):null;
   const daysCls = nextDays<14?'urgent':nextDays<45?'soon':'ok';
   const daysLabel = nextDays<14?`${nextDays} days — act soon`:nextDays<45?`${nextDays} days`:nextDays+' days away';
 
-  // Upcoming 90 days
   const up90 = new Date(today); up90.setDate(up90.getDate()+90);
   const upcoming = INSTS.filter(i=>!i.is_paid&&i.due_date&&new Date(i.due_date)>=today&&new Date(i.due_date)<=up90)
     .sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
   const upTotal = upcoming.reduce((s,i)=>s+(i.amount_aed||0),0);
+
+  // Developer breakdown data
+  const devCount={}, devVal={};
+  PROPS.forEach(p=>{
+    devCount[p.developer]=(devCount[p.developer]||0)+1;
+    devVal[p.developer]=(devVal[p.developer]||0)+(p.purchase_price||0);
+  });
+  const devArr = Object.entries(devCount).sort((a,b)=>b[1]-a[1]);
+  const devValArr = Object.entries(devVal).sort((a,b)=>b[1]-a[1]);
 
   document.getElementById('overviewContent').innerHTML = `
     <div class="sum-grid">
@@ -282,7 +305,7 @@ function renderOverview() {
         <div class="sum-card-accent" style="background:var(--gold-mid)"></div>
         <div class="sum-label">Total investment</div>
         <div class="sum-val">${fm(totalPP)}</div>
-        <div class="sum-sub">${PROPS.length} properties across ${[...new Set(PROPS.map(p=>p.developer))].length} developers</div>
+        <div class="sum-sub">${PROPS.length} properties · ${Object.keys(devCount).length} developers</div>
       </div>
       <div class="sum-card">
         <div class="sum-card-accent" style="background:var(--green)"></div>
@@ -305,48 +328,133 @@ function renderOverview() {
       </div>
     </div>
 
-    ${next ? `
+    ${next?`
     <div class="next-alert">
-      <div class="next-alert-left">
+      <div>
         <div class="next-alert-label">Next payment due</div>
         <div class="next-alert-prop">${nextProp?.project_name||'—'}</div>
         <div class="next-alert-inst">${next.label}</div>
       </div>
-      <div class="next-alert-right">
+      <div style="text-align:right">
         <div class="next-alert-amt">${fmFull(next.amount_aed)}</div>
         <div class="next-alert-date">${fd(next.due_date)}</div>
         <div class="days-pill ${daysCls}">${daysLabel}</div>
       </div>
-    </div>` : ''}
+    </div>`:''}
 
-    <div class="sec-title">Upcoming payments</div>
+    <div class="chart-row">
+      <div class="chart-card">
+        <div class="chart-title">Investment by developer</div>
+        <div style="display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center">
+          <div class="chart-wrap" style="height:180px">
+            <canvas id="chartDev"></canvas>
+          </div>
+          <div class="dev-legend">
+            ${devValArr.map(([dev,val])=>`
+              <div class="dev-leg-item">
+                <div class="dev-leg-dot" style="background:${getCol(dev)}"></div>
+                <div class="dev-leg-name">${dev.split(' ').slice(0,2).join(' ')}</div>
+                <div class="dev-leg-count">${devCount[dev]} prop${devCount[dev]>1?'s':''}</div>
+                <div class="dev-leg-val">${fm(val)}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">Properties by developer</div>
+        <div class="chart-wrap" style="height:180px">
+          <canvas id="chartDevCount"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-bottom:28px">
+      <div class="chart-title">Investment by project — AED</div>
+      <div class="chart-wrap" style="height:${PROPS.length*28+20}px">
+        <canvas id="chartProjects"></canvas>
+      </div>
+    </div>
+
+    <div class="sec-title" style="margin-bottom:4px">Upcoming payments</div>
     <div class="sec-sub" style="margin-bottom:14px">Next 90 days across all properties</div>
 
-    ${upcoming.length ? upcoming.map(i=>{
-      const prop = PROPS.find(p=>p.id===i.property_id);
-      const d = new Date(i.due_date);
-      const days = Math.ceil((d-today)/864e5);
-      const col = getDevColor(prop?.developer);
+    ${upcoming.length?upcoming.map(i=>{
+      const prop=PROPS.find(p=>p.id===i.property_id);
+      const d=new Date(i.due_date);
+      const days=Math.ceil((d-today)/864e5);
+      const col=getCol(prop?.developer);
       return `<div class="up-item">
-        <div class="up-item-left">
+        <div style="display:flex;align-items:center">
           <div class="up-item-dot" style="background:${col}"></div>
-          <div class="up-item-info">
+          <div>
             <div class="up-item-prop">${prop?.project_name||'—'}</div>
             <div class="up-item-inst">${i.label}${i.trigger_type==='milestone'?' · '+i.milestone_pct+'% milestone':''}</div>
           </div>
         </div>
-        <div class="up-item-right">
+        <div style="text-align:right">
           <div class="up-item-amt">${fmFull(i.amount_aed)}</div>
           <div class="up-item-date">${fd(i.due_date)} · <span style="color:${days<14?'var(--red)':days<30?'var(--gold)':'var(--green)'}">${days}d</span></div>
         </div>
       </div>`;
-    }).join('') : '<div style="color:var(--muted);font-size:12px;padding:20px 0">No payments due in the next 90 days.</div>'}
+    }).join(''):'<div style="color:var(--muted);font-size:12px;padding:16px 0">No payments due in the next 90 days.</div>'}
   `;
 
-  // Animate bars
+  // Build charts after DOM is ready
   setTimeout(()=>{
-    document.querySelectorAll('.sum-bar-fill').forEach(b=>b.style.width=b.style.width);
-  },100);
+    // Donut — investment by developer
+    const devEntries = Object.entries(devVal).sort((a,b)=>b[1]-a[1]);
+    new Chart(document.getElementById('chartDev'),{
+      type:'doughnut',
+      data:{
+        labels:devEntries.map(d=>d[0].split(' ').slice(0,2).join(' ')),
+        datasets:[{data:devEntries.map(d=>Math.round(d[1]/1e6)),
+          backgroundColor:devEntries.map(d=>getCol(d[0])),
+          borderWidth:2,borderColor:'#FFFFFF'}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,cutout:'70%',
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'AED '+c.parsed+'M'}}}}
+    });
+
+    // Bar — count by developer
+    const devCountArr = Object.entries(devCount).sort((a,b)=>b[1]-a[1]);
+    new Chart(document.getElementById('chartDevCount'),{
+      type:'bar',
+      data:{
+        labels:devCountArr.map(d=>d[0].split(' ').slice(0,2).join(' ')),
+        datasets:[{data:devCountArr.map(d=>d[1]),
+          backgroundColor:devCountArr.map(d=>getCol(d[0])+'CC'),
+          borderRadius:3,borderSkipped:false}]
+      },
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' propert'+(c.parsed.y===1?'y':'ies')}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:10},color:'#8A8278'}},
+          y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{stepSize:1,font:{size:10},color:'#8A8278'}}
+        }}
+    });
+
+    // Horizontal bar — investment by project
+    const projArr = [...PROPS].sort((a,b)=>(b.purchase_price||0)-(a.purchase_price||0));
+    new Chart(document.getElementById('chartProjects'),{
+      type:'bar',
+      data:{
+        labels:projArr.map(p=>p.project_name),
+        datasets:[
+          {label:'Paid',data:projArr.map(p=>Math.round(getPaid(p)/1e6)),backgroundColor:projArr.map(p=>getCol(p.developer)+'CC'),borderRadius:2,borderSkipped:false},
+          {label:'Due',data:projArr.map(p=>Math.round(getDue(p)/1e6)),backgroundColor:projArr.map(p=>getCol(p.developer)+'44'),borderRadius:2,borderSkipped:false}
+        ]
+      },
+      options:{
+        indexAxis:'y',responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{position:'top',align:'end',labels:{font:{size:10},color:'#8A8278',boxWidth:10,padding:12}},
+          tooltip:{callbacks:{label:c=>'AED '+c.parsed.x+'M'}}},
+        scales:{
+          x:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>v+'M',font:{size:10},color:'#8A8278'}},
+          y:{stacked:true,grid:{display:false},ticks:{font:{size:10},color:'#1A1814'}}
+        }
+      }
+    });
+  },50);
 }
 
 // ============================================================
@@ -357,9 +465,9 @@ function renderProperties() {
     ${PROPS.map(p=>{
       const paid=getPaid(p),pp=p.purchase_price||0,due=getDue(p);
       const pct=pp?Math.round(paid/pp*100):0;
-      const col=getDevColor(p.developer);
-      const instCount=INSTS.filter(i=>i.property_id===p.id).length;
+      const col=getCol(p.developer);
       const paidCount=INSTS.filter(i=>i.property_id===p.id&&i.is_paid).length;
+      const instCount=INSTS.filter(i=>i.property_id===p.id).length;
       return `<div class="prop-card" onclick="showPg('schedule',null);scrollToSched('${p.id}')">
         <div class="prop-card-top">
           <div style="display:flex;align-items:flex-start;justify-content:space-between">
@@ -370,10 +478,10 @@ function renderProperties() {
             </div>
             <div class="handover-badge">${p.handover_date||'TBC'}</div>
           </div>
-          <div class="prop-card-progress" style="margin-top:14px">
-            <div class="prop-card-bar" style="width:${pct}%;background:${col}"></div>
+          <div class="prop-progress" style="margin-top:14px">
+            <div class="prop-progress-fill" style="width:${pct}%;background:${col}"></div>
           </div>
-          <div class="prop-card-pct" style="color:${col}">${pct}% paid · ${paidCount}/${instCount} installments</div>
+          <div class="prop-pct" style="color:${col}">${pct}% paid · ${paidCount}/${instCount} installments</div>
         </div>
         <div class="prop-card-bottom">
           <div class="prop-stat">
@@ -401,34 +509,34 @@ function renderProperties() {
 // ============================================================
 function renderSchedule() {
   document.getElementById('schedContent').innerHTML = PROPS.map(p=>{
-    const insts = INSTS.filter(i=>i.property_id===p.id).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
+    const insts=INSTS.filter(i=>i.property_id===p.id).sort((a,b)=>new Date(a.due_date)-new Date(b.due_date));
     const paid=getPaid(p),pp=p.purchase_price||0;
     const pct=pp?Math.round(paid/pp*100):0;
-    const col=getDevColor(p.developer);
+    const col=getCol(p.developer);
     return `<div class="sched-card" id="sched-${p.id}">
       <div class="sched-header" onclick="toggleSched('sb-${p.id}')">
         <div>
           <div style="font-size:9px;color:${col};text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px">${p.developer}</div>
           <div class="sched-prop-name">${p.project_name}</div>
-          <div class="sched-prop-dev">${p.unit_ref||''} · ${p.bedrooms||''} · Handover ${p.handover_date||'TBC'}</div>
+          <div class="sched-prop-meta">${p.unit_ref||''} · ${p.bedrooms||''} · Handover ${p.handover_date||'TBC'}</div>
         </div>
-        <div class="sched-header-right">
+        <div style="text-align:right">
           <div class="sched-pct" style="color:${col}">${pct}%</div>
           <div class="sched-pct-label">paid · ${fmFull(pp)}</div>
         </div>
       </div>
       <div class="sched-body" id="sb-${p.id}">
         ${insts.map(i=>{
-          const overdue = !i.is_paid && new Date(i.due_date) < today;
+          const overdue=!i.is_paid&&new Date(i.due_date)<today;
           return `<div class="sched-row ${i.is_paid?'paid':''}">
             <div class="sched-check ${i.is_paid?'checked':''}">${i.is_paid?'✓':''}</div>
-            <div class="sched-label">
+            <div class="sched-label" style="flex:1">
               ${i.label}
-              ${i.trigger_type==='milestone'?`<span class="sched-type">${i.milestone_pct}% milestone</span>`:''}
+              ${i.trigger_type==='milestone'?`<span class="sched-type-tag">${i.milestone_pct}% milestone</span>`:''}
             </div>
             <div class="sched-date" style="color:${overdue?'var(--red)':i.is_paid?'var(--muted)':'var(--text)'}">
               ${i.is_paid?`Paid ${fd(i.paid_on)}`:fd(i.due_date)}
-              ${overdue?` <span style="font-size:9px;color:var(--red)">overdue</span>`:''}
+              ${overdue?'<span style="color:var(--red);font-size:9px;margin-left:4px">overdue</span>':''}
             </div>
             <div class="sched-amt" style="color:${i.is_paid?'var(--muted)':'var(--text)'}">${fmFull(i.amount_aed)}</div>
           </div>`;
@@ -438,66 +546,127 @@ function renderSchedule() {
   }).join('');
 }
 
-function toggleSched(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('open');
-}
-
-function scrollToSched(propId) {
+function toggleSched(id){ document.getElementById(id).classList.toggle('open'); }
+function scrollToSched(propId){
   setTimeout(()=>{
-    const el = document.getElementById('sched-'+propId);
-    if (el) {
-      el.scrollIntoView({behavior:'smooth',block:'start'});
-      const body = document.getElementById('sb-'+propId);
-      if (body) body.classList.add('open');
-    }
-  }, 100);
+    const el=document.getElementById('sched-'+propId);
+    if (el){ el.scrollIntoView({behavior:'smooth',block:'start'}); document.getElementById('sb-'+propId)?.classList.add('open'); }
+  },100);
 }
 
 // ============================================================
 // CASHFLOW
 // ============================================================
+let cfCharts = {};
 function renderCashflow() {
-  const byYear = {};
+  const byYear={};
   INSTS.forEach(i=>{
     if (!i.due_date) return;
     const d=new Date(i.due_date), yr=d.getFullYear(), mo=d.getMonth();
-    if (!byYear[yr]) byYear[yr]=Array(12).fill(null).map(()=>({paid:0,items:[]}));
+    if (!byYear[yr]) byYear[yr]=Array(12).fill(null).map(()=>({paid:0,due:[]}));
     const prop=PROPS.find(p=>p.id===i.property_id);
     if (i.is_paid) byYear[yr][mo].paid+=i.amount_aed||0;
-    else byYear[yr][mo].items.push({amt:i.amount_aed||0,name:prop?.project_name||'—',label:i.label});
+    else byYear[yr][mo].due.push({amt:i.amount_aed||0,name:prop?.project_name||'—',label:i.label,propId:i.property_id,col:getCol(prop?.developer)});
   });
 
-  const yrs = Object.keys(byYear).sort();
-  document.getElementById('cfContent').innerHTML = yrs.map(yr=>{
-    const months = byYear[yr];
+  const yrs=Object.keys(byYear).sort();
+
+  // Render tabs
+  document.getElementById('yrTabs').innerHTML = yrs.map((yr,i)=>`
+    <div class="yr-tab ${i===0?'on':''}" onclick="showYr('${yr}',this)">${yr}</div>
+  `).join('');
+
+  // Render each year's content
+  document.getElementById('yrContent').innerHTML = yrs.map((yr,yi)=>{
+    const months=byYear[yr];
     const totalPaid=months.reduce((s,m)=>s+m.paid,0);
-    const totalDue=months.reduce((s,m)=>s+m.items.reduce((ss,i)=>ss+i.amt,0),0);
-    const total=totalPaid+totalDue;
+    const totalDue=months.reduce((s,m)=>s+m.due.reduce((ss,i)=>ss+i.amt,0),0);
+    const activeMos=months.map((m,mi)=>({...m,mi})).filter(m=>m.paid||m.due.length);
 
-    const activeMos = months.map((m,mi)=>({...m,mi})).filter(m=>m.paid||m.items.length);
-
-    return `<div class="cf-year">
-      <div class="cf-year-hdr">
-        <span class="cf-year-num">${yr}</span>
-        <span class="cf-year-total">${fm(total)}</span>
-        ${totalPaid?`<span style="font-size:11px;color:var(--green)">${fm(totalPaid)} paid</span>`:''}
-        ${totalDue?`<span style="font-size:11px;color:var(--red)">${fm(totalDue)} due</span>`:''}
+    return `<div class="yr-content ${yi===0?'on':''}" id="yr-${yr}">
+      <div class="yr-summary">
+        <div class="yr-sum-card">
+          <div class="yr-sum-label">Total this year</div>
+          <div class="yr-sum-val">${fm(totalPaid+totalDue)}</div>
+        </div>
+        <div class="yr-sum-card">
+          <div class="yr-sum-label">Already paid</div>
+          <div class="yr-sum-val" style="color:var(--green)">${fm(totalPaid)}</div>
+        </div>
+        <div class="yr-sum-card">
+          <div class="yr-sum-label">Still due</div>
+          <div class="yr-sum-val" style="color:var(--red)">${fm(totalDue)}</div>
+        </div>
       </div>
-      <div class="cf-month-grid">
+
+      <div class="chart-card" style="margin-bottom:20px">
+        <div class="chart-title">Monthly breakdown — ${yr}</div>
+        <div class="chart-wrap" style="height:160px">
+          <canvas id="cfChart-${yr}"></canvas>
+        </div>
+      </div>
+
+      <div class="yr-month-list">
         ${activeMos.map(m=>`
-          <div class="cf-month">
-            <div class="cf-month-name">${MN[m.mi]}</div>
-            ${m.paid?`<div class="cf-month-amt" style="color:var(--green);font-size:14px">${fm(m.paid)}<span style="font-size:9px;color:var(--green);margin-left:4px">paid</span></div>`:''}
-            ${m.items.length?`<div class="cf-month-amt">${fm(m.items.reduce((s,i)=>s+i.amt,0))}</div>`:''}
-            <div class="cf-month-items">
-              ${m.items.map(i=>`<div class="cf-month-item" title="${i.name} — ${i.label}">${i.name.split(' ').slice(0,2).join(' ')}</div>`).join('')}
+          <div class="yr-month-item">
+            <div class="yr-month-name">${MN[m.mi]} ${yr}</div>
+            <div class="yr-month-payments">
+              ${m.paid?`<div class="yr-pay-row">
+                <div><div class="yr-pay-prop" style="color:var(--green)">Payments received</div></div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="yr-pay-amt" style="color:var(--green)">${fmFull(m.paid)}</div>
+                  <span class="yr-pay-status-paid">Paid</span>
+                </div>
+              </div>`:''}
+              ${m.due.map(i=>`
+                <div class="yr-pay-row">
+                  <div>
+                    <div class="yr-pay-prop">${i.name}</div>
+                    <div class="yr-pay-label">${i.label}</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div class="yr-pay-amt">${fmFull(i.amt)}</div>
+                    <span class="yr-pay-status-due">Due</span>
+                  </div>
+                </div>`).join('')}
             </div>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
     </div>`;
   }).join('');
+
+  // Build charts for each year
+  setTimeout(()=>{
+    yrs.forEach(yr=>{
+      const months=byYear[yr];
+      const labels=MN;
+      const paidData=months.map(m=>Math.round(m.paid/1e6*10)/10);
+      const dueData=months.map(m=>Math.round(m.due.reduce((s,i)=>s+i.amt,0)/1e6*10)/10);
+      const canvas=document.getElementById('cfChart-'+yr);
+      if (!canvas) return;
+      cfCharts[yr] = new Chart(canvas,{
+        type:'bar',
+        data:{labels,datasets:[
+          {label:'Paid',data:paidData,backgroundColor:'#1A7A5A44',borderColor:'#1A7A5A',borderWidth:1,borderRadius:3},
+          {label:'Due',data:dueData,backgroundColor:'#C9A84C33',borderColor:'#C9A84C',borderWidth:1,borderRadius:3}
+        ]},
+        options:{responsive:true,maintainAspectRatio:false,
+          plugins:{legend:{position:'top',align:'end',labels:{font:{size:10},color:'#8A8278',boxWidth:8,padding:10}},
+            tooltip:{callbacks:{label:c=>'AED '+c.parsed.y+'M'}}},
+          scales:{
+            x:{grid:{display:false},ticks:{font:{size:9},color:'#8A8278'}},
+            y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>v+'M',font:{size:9},color:'#8A8278'}}
+          }}
+      });
+    });
+  },50);
+}
+
+function showYr(yr, btn) {
+  document.querySelectorAll('.yr-tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.yr-content').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('yr-'+yr).classList.add('on');
 }
 
 // ============================================================
@@ -508,10 +677,7 @@ function showPg(id, el) {
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('on'));
   document.getElementById('pg-'+id).classList.add('on');
   if (el) el.classList.add('on');
-  else {
-    const map={overview:0,properties:1,schedule:2,cashflow:3};
-    document.querySelectorAll('.ntab')[map[id]]?.classList.add('on');
-  }
+  else { const m={overview:0,properties:1,schedule:2,cashflow:3}; document.querySelectorAll('.ntab')[m[id]]?.classList.add('on'); }
 }
 
 load();
